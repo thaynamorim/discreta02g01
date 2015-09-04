@@ -12,7 +12,6 @@ typedef struct sl
 
 void ulet(ullong *var, char *num);
 int div2(char *in, char *out);
-void zeroleft(char *numero);
 void dec2bin(char *numantes, char *numdepois);
 unsigned long po2(int i);
 void uadd(ullong *a, ullong *b, ullong *c);
@@ -75,21 +74,8 @@ void dec2bin(char *numantes, char *numdepois)
         return;
     }
     *numdepois = div2(numantes, tempchar) + '0';
-    zeroleft(tempchar);
     ++numdepois;
     dec2bin(tempchar,numdepois);
-    return;
-}
-
-
-void zeroleft(char *numero)
-{
-    if(*numero == '0')
-        while(*numero != '\0')
-        {
-            *numero = *(numero + 1);
-            ++numero;
-        }
     return;
 }
 
@@ -161,7 +147,6 @@ void bin2dec2(char *high, char *low, char *num_dec)
         {
             p2s(valor,i);
             ssoma(num_dec,valor,num_dec);
-            zeroleft(num_dec);
         }
         --low;
         ++i;
@@ -182,7 +167,6 @@ void bin2dec2(char *high, char *low, char *num_dec)
         {
             p2s(valor,i);
             ssoma(num_dec,valor,num_dec);
-            zeroleft(num_dec);
         }
         --high;
         ++i;
@@ -195,10 +179,7 @@ void p2s(char *num, int n)
 {
     int i;
     for(i = 0;i < n;i++)
-    {
         ssoma(num,num,num);
-        zeroleft(num);
-    }
     return;
 }
 
