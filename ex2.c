@@ -79,6 +79,7 @@ typedef struct sl
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
+unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 
 int main(void)
 {
@@ -189,3 +190,38 @@ int uadd(ullong *a, ullong *b, ullong *c)
         carry = 1;
     return carry;
 }
+
+unsigned long udiv(unsigned long dividendo, unsigned long divisor) 
+{
+    unsigned long denom=divisor;
+    unsigned long atual = 1;
+    unsigned long resposta=0;
+
+    if ( denom > dividendo)
+        return 0;
+
+    if ( denom == dividendo)
+        return 1;
+
+    while (denom <= dividendo) 
+    {
+        denom <<= 1;
+        atual <<= 1;
+    }
+
+    denom >>= 1;
+    atual >>= 1;
+
+    while (atual!=0) 
+    {
+        if ( dividendo >= denom) 
+        {
+            dividendo -= denom;
+            resposta |= atual;
+        }
+        atual >>= 1;
+        denom >>= 1;
+    }
+    return resposta;
+}
+
