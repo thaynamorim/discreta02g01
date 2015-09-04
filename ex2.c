@@ -1,6 +1,7 @@
 /* ************************************************************************ *
  *    ex2.c, v1.0                                                           *
- *    BRIEF_DESCRIPTION                                                     *
+ *    Programa feito para criar uma variavel de 128 bits para calcular      *
+ *    se um certo numero grande é primo                                     *
  *                                                                          *
  *    Copyright (C) 2015                                                    *
  *    Felipe José Alexandrino Calado                                        *
