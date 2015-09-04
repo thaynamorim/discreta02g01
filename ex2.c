@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 #define MAXULLONG "340282366920938463463374607431768211455"
-#define BUFFER 128
+#define MAXLONG 18446744073709551615
+#define BUFFER 4
 
 typedef struct sl
 {
@@ -12,17 +13,18 @@ typedef struct sl
 
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
+int uadd(ullong *a, ullong *b, ullong *c);
 
 int main(void)
 {
     ullong x, y, z;
-    char a[] = "5", b[] = "255", c[] = "1509890185901285921459";
+    char a[] = "7", b[] = "4";
     if(ulet(a,&x))
         printf("x estourou\n");
     if(ulet(b,&y))
         printf("y estourou\n");
-    if(ulet(c,&z))
-        printf("z estourou\n");
+    if(uadd(&x,&y,&z))
+        printf("OVERFLOW!\n");
     printf("x: %lu | %lu\ny: %lu | %lu\nz: %lu | %lu\n",x.l,x.h,y.l,y.h,z.l,z.h);
     /*ulet(&x,"170141183460469231731687303715884105726");
     ulet(&y,"170141183460469231731687303715884105723");
@@ -80,3 +82,45 @@ int div2(char *in, char *out)
     return (nval/5);
 }
 
+int uadd(ullong *a, ullong *b, ullong *c)
+{
+    unsigned carry = 1, i = 0;
+    unsigned long x, y;
+    c->l = 0;
+    c->h = 0;
+    x = a->l;
+    y = b->l;
+    while(i < BUFFER/2 && carry == 1)
+    {
+        i++;
+        c->l = x ^ y;
+        carry = (x & y);
+        if(i != (BUFFER/2))
+            carry = carry << 1;
+        x = c->l;
+        y = carry;
+    }
+    x = a->h;
+    y = b->h;
+    i = 0;
+    if(carry)
+        carry = 1;
+    i++;
+    c->h = x ^ y;
+    carry = (x & y);
+    if(i != (BUFFER/2))
+         carry = carry << 1;
+    x = c->h;
+    while(i < BUFFER/2 && carry == 1) 
+    {
+        i++;
+        c->h = x ^ y;
+        carry = (x & y);
+        if(i != (BUFFER/2))
+            carry = carry << 1;
+        x = c->h;
+    }
+    if(carry)
+        carry = 1;
+    return carry;
+}
