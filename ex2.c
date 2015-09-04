@@ -40,31 +40,30 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-
-void ulet(ullong *var, char *num)
+int ulet(char *in, ullong *out)
 {
-    char xbin[BUFFER];
-    dec2bin(num, xbin);
-    char *xpoint = xbin;
     int i = 0;
-    var->l = 0;
-    while(i < (BUFFER/2) && *xpoint != '\0')
+    int c;
+    out->l = 0;
+    out->h = 0;
+    while(*in != '\0')
     {
-        var->l += (*xpoint - '0') * po2(i);
-        ++xpoint;
-        i++;
+        ++i;
+        c = div2(in,in);
+        if(i<BUFFER/2)
+            out->h |= (c << (BUFFER/2 - i));
+        else
+            out->l |= (c << (BUFFER - i));
     }
-    var->h = 0;
-    i = 0;
-    while(i < (BUFFER/2) && *xpoint != '\0')
+    printf("i: %d low: %lu high: %lu\n",i,out->l,out->h);
+    while(i<BUFFER)
     {
-        var->h += (*xpoint - '0') * po2(i);
-        ++xpoint;
-        i++;
+        ++i;
+        out->l = (out->l >> 1) | ((out->h & 1) << (sizeof(out->l) - 1));
+        out->h = (out->h >> 1);
     }
-    return;
+    return 0;
 }
-
 void dec2bin(char *numantes, char *numdepois)
 {
     char tempchar[BUFFER];
