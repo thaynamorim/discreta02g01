@@ -1,8 +1,14 @@
 /* ************************************************************************ *
- *    PROGRAM_NAME, VERSION                                                 *
+ *    ex2.c, v1.0                                                           *
  *    BRIEF_DESCRIPTION                                                     *
  *                                                                          *
- *    Copyright (C) 2015 by Nome Completo                                   *
+ *    Copyright (C) 2015                                                    *
+ *    Felipe José Alexandrino Calado                                        *
+ *    Hugo Albuquerque de Fonsêca                                           *
+ *    Lucas Canejo Jurema                                                   *
+ *    Mateus Lenier Rezende                                                 *
+ *    Paulo Vitor Alves Patriota                                            *
+ *    Thayna Maria Morim de Barros Barreto                                  *
  *                                                                          *
  *    This program is free software; you can redistribute it and/or modify  *
  *    it under the terms of the GNU General Public License as published by  *
@@ -20,9 +26,26 @@
  *    59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  *                                                                          *
  *    To contact the author, please write to:                               *
- *    Nome Completo <email@dominio.dd>                                      *
- *    Webpage: http://www.example.com                                       *
- *    Phone: +cc (dd) xxxx-xxxx                                             *
+ *    Felipe José Alexandrino Calado  <lipecalado@gmail.com>                *
+ *    Phone: 55 (819) 9521-3911                                             *
+ *                                                                          *
+ *    Hugo Albuquerque de Fonsêca <hugoalbuquerque0@gmail.com>              *
+ *    Phone: 55 (819) 9875-6561                                             *
+ *                                                                          *
+ *    Lucas Canejo Jurema <lucasbrgol2010@hotmail.com>                      *
+ *    Phone: 55 (819) 9547-1048                                             *
+ *                                                                          *    
+ *    Mateus Lenier Rezende <mateuslenier@gmail.com>                        *
+ *    Phone: 55 (819) 9891-2596                                             *
+ *                                                                          *
+ *    Paulo Vitor Alves Patriota <paulovitorpatriota@gmail.com>             *
+ *    Phone: 55 (819) 9966-1154                                             *
+ *                                                                          *
+ *    Thayna Maria Morim de Barros Barreto <tmorimbarreto@gmail.com>        *
+ *    Phone: 55 (819) 9746-8034                                             *
+ *                                                                          *
+ *                                                                          *
+ *                                                                          *       
  * ************************************************************************ *
  * 
  */
