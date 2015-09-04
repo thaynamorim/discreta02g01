@@ -11,7 +11,7 @@ typedef struct sl
 } ullong;
 
 void ulet(ullong *var, char *num);
-int div2(char *numantes, char *numdepois);
+int div2(char *in, char *out);
 void zeroleft(char *numero);
 void dec2bin(char *numantes, char *numdepois);
 unsigned long po2(int i);
@@ -243,21 +243,27 @@ void dec2bin2(unsigned long dec, char *ebinn)
     return;
 }
 
-int div2(char *numantes, char *numdepois)
+int div2(char *in, char *out)
 {
-    int prox_val = 0, val_atual;
-    while(*numantes != '\0')
+    int nval = 0, aval;
+    int f = 1;
+    if((*in-'0')/2)
+        f = 0;
+    while(*in != '\0')
     {
-        val_atual = prox_val;
-        prox_val = 0;
-        if(*numantes%2)
-            prox_val = 5;
-        *numdepois = (*numantes - '0')/2 + val_atual + '0';
-        ++numantes;
-        ++numdepois;
+        aval = nval;
+        nval = 0;
+        if(*in%2)
+            nval = 5;
+        *out = (*in - '0')/2 + aval + '0';
+        ++in;
+        if(f)
+            f = 0;
+        else
+            ++out;
     }
-    *numdepois = '\0';
-    return (prox_val/5);
+    *out = '\0';
+    return (nval/5);
 }
 
 
