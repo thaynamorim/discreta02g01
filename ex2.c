@@ -20,7 +20,7 @@ void zeros(char *a, char *b);
 void conca(char *a, char *b, char *ab);
 void ssoma(char *a, char *b,char *c);
 void p2s(char *num, int n);
-void mult2(char *num);
+int ulmult(int *a, int *b, int *c);
 void dec2bin2(unsigned long dec, char *ebinn);
 void ulprint(ullong a);
 void bin2dec2(char *high, char *low, char *num_dec);
@@ -344,4 +344,15 @@ void conca(char *a, char *b, char *ab)
     }
     *ab = '\0';
     return;
+}
+int ulmult(int *a, int *b, int *c)
+{
+    int i=0;
+    *c=0;
+
+    for(i=0;i<*b;i++)
+    {
+        *c= +*a;
+    }
+    return 0;
 }
