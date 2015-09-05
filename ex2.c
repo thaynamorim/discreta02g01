@@ -84,19 +84,22 @@ typedef struct sl
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
-int ulmult(int *a, int *b, int *c);
+int ulmult(ullong *a, ullong *b, ullong *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 
 int main(void)
 {
     ullong x, y, z;
-    if(ulet("170141183460469231731687303715884105726",&x))
+//    if(ulet("170141183460469231731687303715884105726",&x))
+    if(ulet("3",&x))
         printf("x estourou\n");
-    if(ulet("170141183460469231731687303715884105723",&y))
+    //if(ulet("170141183460469231731687303715884105723",&y))
+    if(ulet("5",&y))
         printf("y estourou\n");
     if(uadd(&x,&y,&z))
         printf("OVERFLOW!\n");
     printf("x: %lu | %lu\ny: %lu | %lu\nz: %lu | %lu\n",x.l,x.h,y.l,y.h,z.l,z.h);
+    ulmult(&x,&y,&z);
     /*ulet(&x,"170141183460469231731687303715884105726");
     ulet(&y,"170141183460469231731687303715884105723");
     uadd(&x,&y,&z);
@@ -248,15 +251,23 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     return resposta;
 }
 
-int ulmult(int *a, int *b, int *c)
+int ulmult(ullong *a, ullong *b, ullong *c)
 {
-    int i=0;
-    *c=0;
-
-    for(i=0;i<*b;i++)
+    unsigned long i=0;
+    
+    c->l = 0;
+    c->h = 0;
+    
+    for(i=0;i<b->l;i++)
     {
-        *c += *a;
+        uadd(c,a,c);
+        //printf("%lu -c.l, %lu -c.h \n",c->l,c->h);   
     }
+    for(i=0;i<b->h;i++)
+    {
+        uadd(c,a,c);
+    }
+    //printf("%lu -c.l, %lu -c.h \n",c->l,c->h);
     return 0;
 }
 
