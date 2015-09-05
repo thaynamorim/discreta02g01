@@ -89,10 +89,9 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 int main(void)
 {
     ullong x, y, z;
-    char a[] = "18446744073709551615", b[] = "18446744073709551615";
-    if(ulet(a,&x))
+    if(ulet("170141183460469231731687303715884105726",&x))
         printf("x estourou\n");
-    if(ulet(b,&y))
+    if(ulet("170141183460469231731687303715884105723",&y))
         printf("y estourou\n");
     if(uadd(&x,&y,&z))
         printf("OVERFLOW!\n");
@@ -112,13 +111,22 @@ int main(void)
 
 int ulet(char *in, ullong *out)
 {
+    char ch[BUFFER];
     int i = 0;
-    int c;
+    unsigned long c;
+    while(*in != '\0')
+    {
+        ch[i] = *in;
+        ++in;
+        ++i;
+    }
+    ch[i] = '\0';
+    i = 0;
     out->l = 0;
     out->h = 0;
-    while(*in != '\0' && i < BUFFER)
+    while(*ch != '\0' && i < BUFFER)
     {
-        c = div2(in,in);
+        c = div2(ch,ch);
         if(i<BUFFER/2)
             out->l |= (c << i);
         else
@@ -155,7 +163,7 @@ int div2(char *in, char *out)
 
 int uadd(ullong *a, ullong *b, ullong *c)
 {
-    unsigned long carry = 1, i = 0, transfer = 0, ht = 0;
+    unsigned long carry = 1, i = 0, transfer = 0, ht = 0, tt = 0;
     unsigned long x, y;
     c->l = 0;
     c->h = 0;
@@ -166,12 +174,11 @@ int uadd(ullong *a, ullong *b, ullong *c)
         i++;
         c->l = x ^ y;
         carry = (x & y);
-        if(carry & (1<<(BUFFER/2-1)))
+        if(carry >> (BUFFER/2-1))
             transfer = 1;
         carry = carry << 1;
         x = c->l;
         y = carry;
-        printf("::%lu::%lu (%lu)\n",carry,c->l,sizeof(carry));
     }
     x = a->h;
     y = b->h;
@@ -182,7 +189,7 @@ int uadd(ullong *a, ullong *b, ullong *c)
         i++;
         c->h = x ^ y;
         carry = (x & y);
-        if(carry & (1<<(BUFFER/2-1)))
+        if(carry >> (BUFFER/2-1))
             ht = 1;
         carry = carry << 1;
         x = c->h;
@@ -190,17 +197,18 @@ int uadd(ullong *a, ullong *b, ullong *c)
     }
     i = 0;
     y = transfer;
-    while(transfer) 
+    while(transfer && ~tt) 
     {
         i++;
         c->h = x ^ y;
         transfer = (x & y);
-        if(i != (BUFFER/2))
-            transfer = transfer << 1;
+        if(transfer >> (BUFFER/2-1))
+            tt = 1;
+        transfer = transfer << 1;
         x = c->h;
         y = transfer;
     }
-    if(transfer||carry)
+    if(tt||ht)
         return 1;
     return 0;
 }
