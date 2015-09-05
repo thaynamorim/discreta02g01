@@ -68,7 +68,7 @@
 
 #define MAXULLONG "340282366920938463463374607431768211455"
 #define MAXLONG 18446744073709551615
-#define BUFFER 4
+#define BUFFER 128
 
 typedef struct sl
 {
@@ -84,7 +84,7 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 int main(void)
 {
     ullong x, y, z;
-    char a[] = "7", b[] = "4";
+    char a[] = "18446744073709551615", b[] = "18446744073709551615";
     if(ulet(a,&x))
         printf("x estourou\n");
     if(ulet(b,&y))
@@ -150,45 +150,54 @@ int div2(char *in, char *out)
 
 int uadd(ullong *a, ullong *b, ullong *c)
 {
-    unsigned carry = 1, i = 0;
+    unsigned long carry = 1, i = 0, transfer = 0, ht = 0;
     unsigned long x, y;
     c->l = 0;
     c->h = 0;
     x = a->l;
     y = b->l;
-    while(i < BUFFER/2 && carry == 1)
+    while(carry && ~transfer)
     {
         i++;
         c->l = x ^ y;
         carry = (x & y);
-        if(i != (BUFFER/2))
-            carry = carry << 1;
+        if(carry & (1<<(BUFFER/2-1)))
+            transfer = 1;
+        carry = carry << 1;
         x = c->l;
         y = carry;
+        printf("::%lu::%lu (%lu)\n",carry,c->l,sizeof(carry));
     }
     x = a->h;
     y = b->h;
     i = 0;
-    if(carry)
-        carry = 1;
-    i++;
-    c->h = x ^ y;
-    carry = (x & y);
-    if(i != (BUFFER/2))
-         carry = carry << 1;
-    x = c->h;
-    while(i < BUFFER/2 && carry == 1) 
+    carry = 1;
+    while(carry && ~ht) 
     {
         i++;
         c->h = x ^ y;
         carry = (x & y);
-        if(i != (BUFFER/2))
-            carry = carry << 1;
+        if(carry & (1<<(BUFFER/2-1)))
+            ht = 1;
+        carry = carry << 1;
         x = c->h;
+        y = carry;
     }
-    if(carry)
-        carry = 1;
-    return carry;
+    i = 0;
+    y = transfer;
+    while(transfer) 
+    {
+        i++;
+        c->h = x ^ y;
+        transfer = (x & y);
+        if(i != (BUFFER/2))
+            transfer = transfer << 1;
+        x = c->h;
+        y = transfer;
+    }
+    if(transfer||carry)
+        return 1;
+    return 0;
 }
 
 unsigned long udiv(unsigned long dividendo, unsigned long divisor) 
