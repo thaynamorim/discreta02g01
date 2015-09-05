@@ -84,6 +84,7 @@ typedef struct sl
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
+int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 
 int main(void)
@@ -242,3 +243,38 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     return resposta;
 }
 
+int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
+{
+    unsigned long carry = 1;
+    unsigned long plus, minus;
+    if(*a == *b)
+    {
+        *c = *a;
+    }
+    if(*a>*b)
+    {
+        *c = *a;
+        minus = ~b + 1;
+        plus = *a;
+        while(minus)
+        {
+            *c ^= minus;
+            minus &= plus;
+            plus = *c;
+        }
+        return 0;
+    }
+    else
+    {
+        *c = *a;
+        minus = ~b + 1;
+        plus = *a;
+        while(minus)
+        {
+            *c ^= minus;
+            minus &= plus;
+            plus = *c;
+        }
+        return 1;
+    }
+}
