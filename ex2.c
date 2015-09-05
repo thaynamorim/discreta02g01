@@ -90,9 +90,6 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 int main(void)
 {
     ullong x, y, z;
-    unsigned long a = 4, b = 5, c = 0, d;
-    d = lsub(&a,&b,&c);
-    printf("%lu - %lu = %lu[%d]\n\n",a,b,c,d);
     if(ulet("170141183460469231731687303715884105726",&x))
         printf("x estourou\n");
     if(ulet("170141183460469231731687303715884105723",&y))
