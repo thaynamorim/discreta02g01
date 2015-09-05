@@ -85,6 +85,8 @@ int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+int usub(ullong *x,ullong *y, ullong *z);
+int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
 
 int main(void)
 {
@@ -246,4 +248,29 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     }
     return resposta;
 }
+int usub(ullong *x,ullong *y,ullong *z) //z = x-y
+{
+    int flag = 0;
+    unsigned long um=1;
+    if(x->h < y->h)
+    {
+        z->l = 0;
+        z->h = 0;
+        return 1;
+    }
 
+    flag = lsub(&(x->l),&(y->l),&(z->l));
+    lsub(&(x->h),&(y->h),&(z->h));
+    if(flag);
+    {
+        flag = lsub(&(z->h),&um,&(z->h));
+        return 0;
+    }
+    return 1;
+}
+
+int lsub(unsigned long *a, unsigned long *b, unsigned  long *c)
+{
+    *c=*a-*b;
+    return 0;
+}
