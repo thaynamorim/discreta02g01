@@ -52,13 +52,18 @@
  */
 /**
  * \file ex2.c
- * \brief 
- * \author Your Name Here
- * \version 
+ * \brief programa que cria uma variavel de 128 bits e verificar se e primo 
+ * \author Felipe José Alexandrino Calado <<lipecalado@gmail.com>>   
+ * \author Hugo Albuquerque de Fonsêca <<hugoalbuquerque0@gmail.com>>
+ * \author Lucas Canejo Jurema <<lucasbrgol2010@hotmail.com>>
+ * \author Mateus Lenier Rezende <<mateuslenier@gmail.com>>
+ * \author Paulo Vitor Alves Patriota <<paulovitorpatriota@gmail.com>>
+ * \author Thayna Maria Morim de Barros Barreto <<tmorimbarreto@gmail.com>>  
+ * \version 1.0
  * \date 2015-09-04
  */
 /**
- * \name 
+ * \ 
  * @{ */
 /**  @} */
 
