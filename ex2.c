@@ -163,7 +163,7 @@ int div2(char *in, char *out)
 
 int uadd(ullong *a, ullong *b, ullong *c)
 {
-    unsigned long carry = 1, i = 0, transfer = 0, ht = 0, tt = 0;
+    unsigned long carry = 1, transfer = 0, ht = 0, tt = 0;
     unsigned long x, y;
     c->l = 0;
     c->h = 0;
@@ -171,7 +171,6 @@ int uadd(ullong *a, ullong *b, ullong *c)
     y = b->l;
     while(carry && ~transfer)
     {
-        i++;
         c->l = x ^ y;
         carry = (x & y);
         if(carry >> (BUFFER/2-1))
@@ -182,11 +181,9 @@ int uadd(ullong *a, ullong *b, ullong *c)
     }
     x = a->h;
     y = b->h;
-    i = 0;
     carry = 1;
     while(carry && ~ht) 
     {
-        i++;
         c->h = x ^ y;
         carry = (x & y);
         if(carry >> (BUFFER/2-1))
@@ -195,11 +192,9 @@ int uadd(ullong *a, ullong *b, ullong *c)
         x = c->h;
         y = carry;
     }
-    i = 0;
     y = transfer;
     while(transfer && ~tt) 
     {
-        i++;
         c->h = x ^ y;
         transfer = (x & y);
         if(transfer >> (BUFFER/2-1))
