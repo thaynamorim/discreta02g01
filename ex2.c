@@ -90,6 +90,9 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 int main(void)
 {
     ullong x, y, z;
+    unsigned long a = 4, b = 5, c = 0, d;
+    d = lsub(&a,&b,&c);
+    printf("%lu - %lu = %lu[%d]\n\n",a,b,c,d);
     if(ulet("170141183460469231731687303715884105726",&x))
         printf("x estourou\n");
     if(ulet("170141183460469231731687303715884105723",&y))
@@ -245,16 +248,33 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
 
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
 {
-    unsigned long carry = 1;
-    unsigned long plus, minus;
+    unsigned long plus, minus, bit = 0, tbit = 1;
+    if(*b == 0)
+    {
+        *c = *a;
+        return 0;
+    }
+    if(*a == 0)
+    {
+        *c = *b;
+        return 1;
+    }
     if(*a == *b)
     {
         *c = *a;
+        return 0;
     }
     if(*a>*b)
     {
         *c = *a;
-        minus = ~b + 1;
+        tbit = *b;
+        while(tbit)
+        {
+            tbit >>= 1;
+            bit = (bit << 1) | 1;
+        }
+        bit >>= 1;
+        minus = ~(*b)+1;
         plus = *a;
         while(minus)
         {
@@ -262,19 +282,28 @@ int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
             minus &= plus;
             plus = *c;
         }
+        *c &= bit;
         return 0;
     }
     else
     {
-        *c = *a;
-        minus = ~b + 1;
-        plus = *a;
+        *c = *b;
+        tbit = *a;
+        while(tbit)
+        {
+            tbit >>= 1;
+            bit = (bit << 1) | 1;
+        }
+        bit >>= 1;
+        minus = ~(*a)+1;
+        plus = *b;
         while(minus)
         {
             *c ^= minus;
             minus &= plus;
             plus = *c;
         }
+        *c &= bit;
         return 1;
     }
 }
