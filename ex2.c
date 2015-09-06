@@ -86,6 +86,7 @@ int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
 int ulmult(ullong *a, ullong *b, ullong *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+int isprime (long *n);
 
 int main(void)
 {
@@ -277,3 +278,7 @@ int ulmult(ullong *a, ullong *b, ullong *c)
     return err;
 }
 
+int isprime (long *n)
+{
+    ;
+}
