@@ -243,6 +243,40 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     return resposta;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
 {
     unsigned long plus, minus, bit = 0, tbit = 1;
