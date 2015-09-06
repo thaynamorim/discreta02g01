@@ -73,7 +73,7 @@
 
 #define MAXULLONG "340282366920938463463374607431768211455"
 #define MAXLONG 18446744073709551615
-#define BUFFER 8
+#define BUFFER 128
 
 typedef struct sl
 {
@@ -96,11 +96,11 @@ void sadd(char *a, char *b, char *c);
 int main(void)
 {
     ullong x, y, z;
-    //if(ulet("170141183460469231731687303715884105726",&x))
-    if(ulet("17",&x))
+    if(ulet("170141183460469231731687303715884105726",&x))
+    //if(ulet("17",&x))
         printf("x estourou\n");
-    //if(ulet("170141183460469231731687303715884105729",&y))
-    if(ulet("11",&y))
+    if(ulet("170141183460469231731687303715884105729",&y))
+    //if(ulet("11",&y))
         printf("y estourou\n");
     if(uadd(&x,&y,&z))
         printf("OVERFLOW na soma!\n");
@@ -454,22 +454,24 @@ void mul2(char *in, char *out)
 
 void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 {
-    int i, s, carry = 0;
+    int i = 0, s, carry = 0, j = 0;
     while(*a != '\0')
     {
         *c = *a;
         ++a;
         ++c;
+        ++j;
     }
+    *c = '\0';
     while(*b != '\0')
     {
         ++b;
         ++i;
     }
-    *c = '\0';
     while(i)
     {
         --i;
+        --j;
         --c;
         --b;
         s = *c - '0' + *b - '0' + carry;
@@ -480,9 +482,15 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
         }
         *c = s + '0';
     }
-    if(~carry)
-        return;
-    ++c;
-    *c += carry;
+    while(j)
+    {
+        --c;
+        --j;
+        if(carry)
+        {
+            *c += carry;
+            carry = 0;
+        }
+    }
     return;
 }
