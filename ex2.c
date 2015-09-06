@@ -90,14 +90,12 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 int main(void)
 {
     ullong x, y, z;
-//    if(ulet("170141183460469231731687303715884105726",&x))
-    if(ulet("3",&x))
-        printf("x estourou\n");
-    //if(ulet("170141183460469231731687303715884105723",&y))
-    if(ulet("5",&y))
-        printf("y estourou\n");
+    if(ulet("170141183460469231731687303715884105726",&x))
+      printf("x estourou\n");
+    if(ulet("170141183460469231731687303715884105723",&y))
+      printf("y estourou\n");
     if(uadd(&x,&y,&z))
-        printf("OVERFLOW!\n");
+      printf("OVERFLOW!\n");
     printf("x: %lu | %lu\ny: %lu | %lu\nz: %lu | %lu\n",x.l,x.h,y.l,y.h,z.l,z.h);
     ulmult(&x,&y,&z);
     /*ulet(&x,"170141183460469231731687303715884105726");
@@ -254,20 +252,19 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
 int ulmult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
-    
+    int err=0;
+
     c->l = 0;
     c->h = 0;
     
-    for(i=0;i<b->l;i++)
+    for(i=0;i<(b->l);i++)
     {
-        uadd(c,a,c);
-        //printf("%lu -c.l, %lu -c.h \n",c->l,c->h);   
+        err |= uadd(c,a,c);
     }
-    for(i=0;i<b->h;i++)
+    for(i=0;i<(b->h);i++)
     {
-        uadd(c,a,c);
+        err |= uadd(c,a,c);
     }
-    //printf("%lu -c.l, %lu -c.h \n",c->l,c->h);
-    return 0;
+    return err;
 }
 
