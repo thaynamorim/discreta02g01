@@ -1,10 +1,6 @@
 ## Matemática Discreta - Exercício 2
 
--------------
-
 Exercício 2 da disciplina de Matemática Discreta da Escola Politécnica de Pernambuco - UPE
-
--------------
 
 #Autores
 
@@ -19,8 +15,6 @@ Mateus Lenier Rezende <mateuslenier@gmail.com>
 Paulo Vitor Alves Patriota <paulovitorpatriota@gmail.com>
 
 Thayna Maria Morim de Barros Barreto <tmorimbarreto@gmail.com>
-
--------------
 
 #Objetivo
 
