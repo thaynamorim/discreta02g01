@@ -281,10 +281,13 @@ int ulmult(ullong *a, ullong *b, ullong *c)
 int isprime (long *n)
 {
     int c;
+    
+    if (*n == 2)
+        return 1;
     for (c=2; c<=*n-1; c++)
     {
-    if(*n%c == 0)
-        return 0;
+        if(*n%c == 0)
+            return 0;
     }
     if (c == *n)
         return 1;
