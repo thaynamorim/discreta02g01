@@ -252,6 +252,7 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
 int ulmult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
+    ullong utemp;
     int err=0;
 
     c->l = 0;
@@ -259,11 +260,19 @@ int ulmult(ullong *a, ullong *b, ullong *c)
     
     for(i=0;i<(b->l);i++)
     {
-        err |= uadd(c,a,c);
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
     }
     for(i=0;i<(b->h);i++)
     {
-        err |= uadd(c,a,c);
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
     }
     return err;
 }
