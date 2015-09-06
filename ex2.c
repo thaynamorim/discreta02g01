@@ -86,27 +86,38 @@ int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+int ulmult(ullong *a, ullong *b, ullong *c);
+unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+void ulprint(ullong *n);
 
 int main(void)
 {
-    ullong x, y, z;
-    if(ulet("170141183460469231731687303715884105726",&x))
+    ullong x, y, mais, menos, vezes;
+    if(ulet("6",&x))
         printf("x estourou\n");
-    if(ulet("170141183460469231731687303715884105723",&y))
+    if(ulet("5",&y))
         printf("y estourou\n");
-    if(uadd(&x,&y,&z))
-        printf("OVERFLOW!\n");
-    printf("x: %lu | %lu\ny: %lu | %lu\nz: %lu | %lu\n",x.l,x.h,y.l,y.h,z.l,z.h);
-    /*ulet(&x,"170141183460469231731687303715884105726");
-    ulet(&y,"170141183460469231731687303715884105723");
-    uadd(&x,&y,&z);
-    printf("Aritmetica de exemplo: \n");
-    ulprint(x);
+    if(uadd(&x,&y,&mais))
+        printf("OVERFLOW na soma!\n");
+    if(ulmult(&x,&y,&vezes))
+        printf("OVERFLOW na multiplicacao!\n");
+    ulprint(&x);
     printf(" + ");
-    ulprint(y);
+    ulprint(&y);
     printf(" = ");
-    ulprint(z);
-    printf("\n");*/
+    ulprint(&mais);
+    printf("\n\n");
+    //ulprint(&x);
+    //printf(" - ");
+    //ulprint(&y);
+    //printf(" = ");
+    //ulprint(&menos);
+    ulprint(&x);
+    printf(" x ");
+    ulprint(&y);
+    printf(" = ");
+    ulprint(&vezes);
+    printf("\n");
     return EXIT_SUCCESS;
 }
 
@@ -243,39 +254,33 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     return resposta;
 }
 
+int umult(ullong *a, ullong *b, ullong *c)
+{
+    unsigned long i=0;
+    ullong utemp;
+    int err=0;
 
+    c->l = 0;
+    c->h = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    for(i=0;i<(b->l);i++)
+    {
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
+    }
+    for(i=0;i<(b->h);i++)
+    {
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
+    }
+    return err;
+}
 
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
 {
@@ -337,4 +342,42 @@ int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
         *c &= bit;
         return 1;
     }
+}
+int ulmult(ullong *a, ullong *b, ullong *c)
+{
+    unsigned long i=0;
+    ullong utemp;
+    int err=0;
+
+    c->l = 0;
+    c->h = 0;
+    
+    for(i=0;i<(b->l);i++)
+    {
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
+    }
+    for(i=0;i<(b->h);i++)
+    {
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
+    }
+    return err;
+}
+
+void ulprint(ullong *n)
+{
+    if(n->h == 0)
+    {
+        printf("%lu",n->l);
+        return;
+    }
+    printf("%lu | %lu",n->l,n->h);
+    return;
 }
