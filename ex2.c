@@ -85,30 +85,37 @@ int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
+<<<<<<< HEAD
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 int umult(ullong *a, ullong *b, ullong *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+int ulmult(ullong *a, ullong *b, ullong *c);
+int udiv(ullong *n, ullong *d,ullong *r);
 void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
 void sadd(char *a, char *b, char *c);
+int usub(ullong *x,ullong *y,ullong *z);
 
 int main(void)
 {
     ullong x, y, z;
-    if(ulet("170141183460469231731687303715884105726",&x))
-    //if(ulet("17",&x))
+    //if(ulet("170141183460469231731687303715884105726",&x))
+    if(ulet("21",&x))
         printf("x estourou\n");
-    if(ulet("170141183460469231731687303715884105729",&y))
-    //if(ulet("11",&y))
+   // if(ulet("170141183460469231731687303715884105729",&y))
+    if(ulet("7",&y))
         printf("y estourou\n");
     if(uadd(&x,&y,&z))
         printf("OVERFLOW na soma!\n");
     ulprint(&x);
-    printf(" + ");
+    printf(" / ");
     ulprint(&y);
     printf(" = ");
+    int i=udiv(&x,&y,&z);
     ulprint(&z);
+    printf("[%d]\n",i);
+    udiv(&x,&y,&z);
     printf("\n");
     return EXIT_SUCCESS;
 }
@@ -212,40 +219,38 @@ int uadd(ullong *a, ullong *b, ullong *c)
     return 0;
 }
 
-unsigned long udiv(unsigned long dividendo, unsigned long divisor) 
+int udiv(ullong *n, ullong *d, ullong *r)
 {
-    unsigned long denom=divisor;
-    unsigned long atual = 1;
-    unsigned long resposta=0;
-
-    if ( denom > dividendo)
-        return 0;
-
-    if ( denom == dividendo)
+    r->l = 0;
+    r->h = 0;
+    if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
         return 1;
-
-    while (denom <= dividendo) 
+    if((d->l == n->l) && (d->h == n->h))
     {
-        denom <<= 1;
-        atual <<= 1;
+        r->l = 1;
+        return 0;
     }
-
-    denom >>= 1;
-    atual >>= 1;
-
-    while (atual!=0) 
+    ullong i,j,k;
+    i.l = n->l;
+    i.h = n->h;
+    while((i.h >= d->h) || ((i.h == d->h) && (i.l >= d->l)))
     {
-        if ( dividendo >= denom) 
-        {
-            dividendo -= denom;
-            resposta |= atual;
-        }
-        atual >>= 1;
-        denom >>= 1;
+        //printf("%lu - %lu = ",i.l, d->l);
+        usub(&i,d,&j);
+        //printf("%lu\n",j.l);
+        i.l = j.l;
+        i.h = j.h;
+        j.l = 1;
+        j.h = 0;
+        uadd(r,&j,&k);
+        r->l = k.l;
+        r->h = k.h;
+
     }
-    return resposta;
+    if(i.l || i.h)
+        return 1;
+    return 0;
 }
-
 int umult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
@@ -274,66 +279,52 @@ int umult(ullong *a, ullong *b, ullong *c)
     return err;
 }
 
-int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
+int usub(ullong *x,ullong *y,ullong *z) 
 {
-    unsigned long plus, minus, bit = 0, tbit = 1;
-    if(*b == 0)
+    if((y->h > x->h) || ((y->h == x->h) && (y->l >x->l)))
     {
-        *c = *a;
-        return 0;
-    }
-    if(*a == 0)
-    {
-        *c = *b;
+        z->l=0;
+        z->h=0;
         return 1;
     }
-    if(*a == *b)
+    if((y->h == x->h) && (y->l == y->h))
     {
-        *c = *a;
+        z->l=0;
+        z->h=0;
         return 0;
     }
-    if(*a>*b)
+    y->l=~y->l + 1;
+    y->h=~y->h;
+    uadd(x,y,z);
+    return 0;
+}
+
+int ulmult(ullong *a, ullong *b, ullong *c)
+{
+    unsigned long i=0;
+    ullong utemp;
+    int err=0;
+
+    c->l = 0;
+    c->h = 0;
+    
+    for(i=0;i<(b->l);i++)
     {
-        *c = *a;
-        tbit = *b;
-        while(tbit)
-        {
-            tbit >>= 1;
-            bit = (bit << 1) | 1;
-        }
-        bit >>= 1;
-        minus = ~(*b)+1;
-        plus = *a;
-        while(minus)
-        {
-            *c ^= minus;
-            minus &= plus;
-            plus = *c;
-        }
-        *c &= bit;
-        return 0;
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
     }
-    else
+    for(i=0;i<(b->h);i++)
     {
-        *c = *b;
-        tbit = *a;
-        while(tbit)
-        {
-            tbit >>= 1;
-            bit = (bit << 1) | 1;
-        }
-        bit >>= 1;
-        minus = ~(*a)+1;
-        plus = *b;
-        while(minus)
-        {
-            *c ^= minus;
-            minus &= plus;
-            plus = *c;
-        }
-        *c &= bit;
-        return 1;
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
     }
+    return err;
 }
 
 void ulprint(ullong *n)
@@ -469,3 +460,7 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
     }
     return;
 }
+
+
+
+
