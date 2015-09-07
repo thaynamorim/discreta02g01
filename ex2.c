@@ -84,18 +84,13 @@ typedef struct sl
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
-int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
-<<<<<<< HEAD
-unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+int usub(ullong *x,ullong *y,ullong *z);
 int umult(ullong *a, ullong *b, ullong *c);
-unsigned long udiv(unsigned long dividendo, unsigned long divisor);
-int ulmult(ullong *a, ullong *b, ullong *c);
 int udiv(ullong *n, ullong *d,ullong *r);
 void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
 void sadd(char *a, char *b, char *c);
-int usub(ullong *x,ullong *y,ullong *z);
 
 int main(void)
 {
@@ -297,34 +292,6 @@ int usub(ullong *x,ullong *y,ullong *z)
     y->h=~y->h;
     uadd(x,y,z);
     return 0;
-}
-
-int ulmult(ullong *a, ullong *b, ullong *c)
-{
-    unsigned long i=0;
-    ullong utemp;
-    int err=0;
-
-    c->l = 0;
-    c->h = 0;
-    
-    for(i=0;i<(b->l);i++)
-    {
-        err |= uadd(c,a,&utemp);
-        c->l = utemp.l;
-        c->h = utemp.h;
-        if(err)
-            break;
-    }
-    for(i=0;i<(b->h);i++)
-    {
-        err |= uadd(c,a,&utemp);
-        c->l = utemp.l;
-        c->h = utemp.h;
-        if(err)
-            break;
-    }
-    return err;
 }
 
 void ulprint(ullong *n)
