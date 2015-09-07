@@ -86,7 +86,7 @@ int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
-int ulmult(ullong *a, ullong *b, ullong *c);
+int umult(ullong *a, ullong *b, ullong *c);
 unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
@@ -182,7 +182,6 @@ int div2(char *in, char *out)
     return (nval/5);
 }
 
-
 /**
  * \ingroup GroupUnique
  * 
@@ -198,7 +197,7 @@ int div2(char *in, char *out)
  * 
  * \retval 0 problema resolvido.
  * 
- * \retval 1 problema com overflow ou underflow.
+ * \retval 1 problema com overflow.
  *   
  */
 
@@ -282,7 +281,6 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     }
     return resposta;
 }
-
 
 /**
  *  \ingroup GroupUnique
@@ -393,51 +391,6 @@ int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
     }
 }
 
-/**
- * \ingroup GroupUnique
- * 
- * \brief
- *   
- * \details
- * 
- * \pre
- * 
- * \param[
- * 
- * \param[
- * 
- * \retval 0 problema resolvido.
- * 
- * \retval 1 problema com overflow ou underflow.
- *
- */
-
-int ulmult(ullong *a, ullong *b, ullong *c)
-{
-    unsigned long i=0;
-    ullong utemp;
-    int err=0;
-
-    c->l = 0;
-    c->h = 0;
-    
-    for(i=0;i<(b->l);i++)
-    {
-        err |= uadd(c,a,&utemp);
-        c->l = utemp.l;
-        c->h = utemp.h;
-        if(err)
-            break;
-    }
-    for(i=0;i<(b->h);i++)
-    {
-        err |= uadd(c,a,&utemp);
-        c->l = utemp.l;
-        c->h = utemp.h;
-        if(err)
-            break;
-    }
-    return err;
 }
 
 void ulprint(ullong *n)
