@@ -113,6 +113,25 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
+/**
+ * \ingroup GroupUnique
+ *    
+ * \brief
+ * 
+ * \details 
+ * 
+ * \pre
+ *
+ * \param[
+ *             
+ * \param[
+ *                 
+ * \retval 0 problema resolvido.
+ *                     
+ * \retval 1 problema com overflow ou underflow.
+ *                                                      
+ */
+
 int ulet(char *in, ullong *out)
 {
     char ch[BUFFER];
@@ -165,6 +184,25 @@ int div2(char *in, char *out)
     return (nval/5);
 }
 
+
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief
+ * 
+ * \details
+ * 
+ * \pre
+ * 
+ * \param[
+ * 
+ * \param[
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow ou underflow.
+ *   
+ */
 int uadd(ullong *a, ullong *b, ullong *c)
 {
     unsigned long carry = 1, transfer = 0, ht = 0, tt = 0;
@@ -245,6 +283,26 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     }
     return resposta;
 }
+
+
+/**
+ *  \ingroup GroupUnique
+ *
+ *  \brief
+ *
+ *  \details
+ *
+ *  \pre
+ *
+ *  \param
+ *
+ *  \param
+ *
+ *  \retval 0
+ *
+ *  \retval 1
+ *
+ */
 
 int umult(ullong *a, ullong *b, ullong *c)
 {
@@ -335,6 +393,26 @@ int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
         return 1;
     }
 }
+
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief
+ *   
+ * \details
+ * 
+ * \pre
+ * 
+ * \param[
+ * 
+ * \param[
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow ou underflow.
+ *
+ */
+
 int ulmult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
@@ -396,6 +474,25 @@ void ulprint(ullong *n)
     return;
 }
 
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief
+ * 
+ * \details
+ * 
+ * \pre
+ * 
+ * \param[
+ * 
+ * \param[
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow ou underflow.
+ *
+ */
+
 void lutoa(unsigned long lu, char *ch)
 {
     unsigned long n = lu, d, i = 1;
@@ -451,6 +548,25 @@ void mul2(char *in, char *out)
     }
     return;
 }
+
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief
+ *  
+ * \details
+ * 
+ * \pre
+ * 
+ * \param[
+ * 
+ * \param[
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow ou underflow.
+ * 
+ */ 
 
 void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 {
