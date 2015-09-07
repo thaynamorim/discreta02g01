@@ -84,31 +84,50 @@ typedef struct sl
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
-int ulmult(ullong *a, ullong *b, ullong *c);
-unsigned long udiv(unsigned long dividendo, unsigned long divisor);
-int isprime (long *n);
+int usub(ullong *x,ullong *y,ullong *z);
+int umult(ullong *a, ullong *b, ullong *c);
+int udiv(ullong *n, ullong *d,ullong *r);
+void ulprint(ullong *n);
+void lutoa(unsigned long n, char *ch);
+void mul2(char *in, char *out);
 
 int main(void)
 {
     ullong x, y, z;
-    if(ulet("170141183460469231731687303715884105726",&x))
-      printf("x estourou\n");
-    if(ulet("170141183460469231731687303715884105723",&y))
-      printf("y estourou\n");
-    if(uadd(&x,&y,&z))
-      printf("OVERFLOW!\n");
-    printf("x: %lu | %lu\ny: %lu | %lu\nz: %lu | %lu\n",x.l,x.h,y.l,y.h,z.l,z.h);
-    ulmult(&x,&y,&z);
-    /*ulet(&x,"170141183460469231731687303715884105726");
-    ulet(&y,"170141183460469231731687303715884105723");
-    uadd(&x,&y,&z);
-    printf("Aritmetica de exemplo: \n");
-    ulprint(x);
+    //if(ulet("170141183460469231731687303715884105726",&x))
+    if(ulet("2157892357238957",&x))
+        printf("x estourou\n");
+   // if(ulet("170141183460469231731687303715884105729",&y))
+    if(ulet("6",&y))
+        printf("y estourou\n");
+    ulprint(&x);
     printf(" + ");
-    ulprint(y);
+    ulprint(&y);
     printf(" = ");
-    ulprint(z);
-    printf("\n");*/
+    int i=uadd(&x,&y,&z);
+    ulprint(&z);
+    printf("[%d]\n",i);
+    ulprint(&x);
+    printf(" - ");
+    ulprint(&y);
+    printf(" = ");
+    i=usub(&x,&y,&z);
+    ulprint(&z);
+    printf("[%d]\n",i);
+    ulprint(&x);
+    printf(" x ");
+    ulprint(&y);
+    printf(" = ");
+    i=umult(&x,&y,&z);
+    ulprint(&z);
+    printf("[%d]\n",i);
+    ulprint(&x);
+    printf(" / ");
+    ulprint(&y);
+    printf(" = ");
+    i=udiv(&x,&y,&z);
+    ulprint(&z);
+    printf("[%d]\n",i);
     return EXIT_SUCCESS;
 }
 
@@ -166,7 +185,7 @@ int div2(char *in, char *out)
 
 int uadd(ullong *a, ullong *b, ullong *c)
 {
-    unsigned long carry = 1, i = 0, transfer = 0, ht = 0, tt = 0;
+    unsigned long carry = 1, transfer = 0, ht = 0, tt = 0;
     unsigned long x, y;
     c->l = 0;
     c->h = 0;
@@ -174,7 +193,6 @@ int uadd(ullong *a, ullong *b, ullong *c)
     y = b->l;
     while(carry && ~transfer)
     {
-        i++;
         c->l = x ^ y;
         carry = (x & y);
         if(carry >> (BUFFER/2-1))
@@ -185,11 +203,9 @@ int uadd(ullong *a, ullong *b, ullong *c)
     }
     x = a->h;
     y = b->h;
-    i = 0;
     carry = 1;
     while(carry && ~ht) 
     {
-        i++;
         c->h = x ^ y;
         carry = (x & y);
         if(carry >> (BUFFER/2-1))
@@ -198,11 +214,9 @@ int uadd(ullong *a, ullong *b, ullong *c)
         x = c->h;
         y = carry;
     }
-    i = 0;
     y = transfer;
     while(transfer && ~tt) 
     {
-        i++;
         c->h = x ^ y;
         transfer = (x & y);
         if(transfer >> (BUFFER/2-1))
@@ -216,41 +230,43 @@ int uadd(ullong *a, ullong *b, ullong *c)
     return 0;
 }
 
-unsigned long udiv(unsigned long dividendo, unsigned long divisor) 
+int udiv(ullong *n, ullong *d, ullong *r)
 {
-    unsigned long denom=divisor;
-    unsigned long atual = 1;
-    unsigned long resposta=0;
-
-    if ( denom > dividendo)
-        return 0;
-
-    if ( denom == dividendo)
+    r->l = 0;
+    r->h = 0;
+    int p = 0;
+    if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
         return 1;
-
-    while (denom <= dividendo) 
+    if((d->l == n->l) && (d->h == n->h))
     {
-        denom <<= 1;
-        atual <<= 1;
+        r->l = 1;
+        return 0;
     }
-
-    denom >>= 1;
-    atual >>= 1;
-
-    while (atual!=0) 
+    ullong i,j,k;
+    i.l = n->l;
+    i.h = n->h;
+    while(1)
     {
-        if ( dividendo >= denom) 
-        {
-            dividendo -= denom;
-            resposta |= atual;
-        }
-        atual >>= 1;
-        denom >>= 1;
+        usub(&i,d,&j);
+        i.l = j.l;
+        i.h = j.h;
+        ulprint(&i);
+        printf("\n\n");
+        j.l = 1;
+        j.h = 0;
+        uadd(r,&j,&k);
+        r->l = k.l;
+        r->h = k.h;
+        if((i.l == 0 && i.h == 0) || (i.h < d->h))
+            break;
+        if((i.h == d->h) && (i.l < d->l))
+            break;
     }
-    return resposta;
+    if(i.l || i.h)
+        return 1;
+    return 0;
 }
-
-int ulmult(ullong *a, ullong *b, ullong *c)
+int umult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
     ullong utemp;
@@ -258,7 +274,7 @@ int ulmult(ullong *a, ullong *b, ullong *c)
 
     c->l = 0;
     c->h = 0;
-    
+
     for(i=0;i<(b->l);i++)
     {
         err |= uadd(c,a,&utemp);
@@ -278,17 +294,165 @@ int ulmult(ullong *a, ullong *b, ullong *c)
     return err;
 }
 
-int isprime (long *n)
+int usub(ullong *x,ullong *y,ullong *z) 
 {
-    int c;
-    
-    if (*n == 2)
+    ullong w;
+    w.l = y->l;
+    w.h = y->h;
+    if((y->h > x->h) || ((y->h == x->h) && (y->l >x->l)))
+    {
+        z->l=0;
+        z->h=0;
         return 1;
-    for (c=2; c<=*n-1; c++)
+    }
+    if((y->h == x->h) && (y->l == y->h))
+    {
+        z->l=0;
+        z->h=0;
     {
         if(*n%c == 0)
             return 0;
     }
-    if (c == *n)
-        return 1;
+    w.l = ~w.l + 1;
+    w.h = ~w.h;
+    uadd(x,&w,z);
+    return 0;
 }
+
+void ulprint(ullong *n)
+{
+    if(n->h == 0)
+    {
+        printf("%lu",n->l);
+        return;
+    }
+    char l[BUFFER] = "", h[BUFFER] = "", t[BUFFER] = "";
+    unsigned i, j;
+    if(n->l)
+        lutoa(n->l,l);
+    lutoa(n->h,t);
+    for(i=0;i<BUFFER/2;i++)
+    {
+        mul2(t,h);
+        for(j=0;j<BUFFER;j++)
+        {
+            t[j] = h[j];
+            if(t[j] == '\0')
+                break;
+        }
+    }
+    if(n->l == 0)
+    {
+        printf("%s",h);
+        return;
+    }
+    /*numero de digitos do high >= numero de digitos do low (decimal)*/
+    sadd(h,l,t);
+    printf("%s",t);
+    return;
+}
+
+void lutoa(unsigned long lu, char *ch)
+{
+    unsigned long n = lu, d, i = 1;
+    while(n >= 10)
+    {
+        n /= 10;
+        i *= 10;
+    }
+    n = lu;
+    while(n)
+    {
+        d = n / i;
+        *ch = d + '0';
+        n %= i;
+        i /= 10;
+        ++ch;
+    }
+    *ch = '\0';
+	return;
+}
+
+void mul2(char *in, char *out)
+{
+    int nval = 0, aval, i = 0;
+    if(((*in-'0')*2) >= 10)
+    {
+        *out = '1';
+        ++out;
+    }
+    while(*in != '\0')
+    {
+        ++in;
+        ++out;
+        ++i;
+    }
+    *out = '\0';
+    while(i)
+    {
+        --in;
+        --out;
+        --i;
+        aval = nval;
+        if(((*in - '0')*2) >= 10)
+        {
+            *out = (*in - '5')*2 + aval + '0';
+            nval = 1;
+        }
+        else
+        {
+            *out = (*in - '0')*2 + aval + '0';
+            nval = 0;
+        }
+    }
+    return;
+}
+
+void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
+{
+    int i = 0, s = 0, carry = 0, j = 0;
+    while(*a != '\0')
+    {
+        *c = *a;
+        ++a;
+        ++c;
+        ++j;
+    }
+    *c = '\0';
+    while(*b != '\0')
+    {
+        ++b;
+        ++i;
+    }
+    while(i)
+    {
+        --i;
+        --j;
+        --c;
+        --b;
+        s = *c - '0' + *b - '0' + carry;
+        if(s>=10)
+        {
+            carry = 1;
+            s %= 10;
+        }
+        else
+            carry = 0;
+        *c = s + '0';
+    }
+    while(j)
+    {
+        --c;
+        --j;
+        if(carry)
+        {
+            *c += carry;
+            carry = 0;
+        }
+    }
+    return;
+}
+
+
+
+
