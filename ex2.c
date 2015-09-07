@@ -85,9 +85,8 @@ int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
-unsigned long udiv(unsigned long dividendo, unsigned long divisor);
 int ulmult(ullong *a, ullong *b, ullong *c);
-unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+int udiv(ullong *n, ullong *d,ullong *r);
 void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
@@ -97,19 +96,22 @@ int usub(ullong *x,ullong *y,ullong *z);
 int main(void)
 {
     ullong x, y, z;
-    if(ulet("170141183460469231731687303715884105726",&x))
-    //if(ulet("17",&x))
+    //if(ulet("170141183460469231731687303715884105726",&x))
+    if(ulet("21",&x))
         printf("x estourou\n");
-    if(ulet("170141183460469231731687303715884105729",&y))
-    //if(ulet("11",&y))
+   // if(ulet("170141183460469231731687303715884105729",&y))
+    if(ulet("7",&y))
         printf("y estourou\n");
     if(uadd(&x,&y,&z))
         printf("OVERFLOW na soma!\n");
     ulprint(&x);
-    printf(" + ");
+    printf(" / ");
     ulprint(&y);
     printf(" = ");
+    int i=udiv(&x,&y,&z);
     ulprint(&z);
+    printf("[%d]\n",i);
+    udiv(&x,&y,&z);
     printf("\n");
     return EXIT_SUCCESS;
 }
@@ -213,36 +215,35 @@ int uadd(ullong *a, ullong *b, ullong *c)
     return 0;
 }
 
-nt udiv(ullong *n, ullong *d, ullong *r)
+int udiv(ullong *n, ullong *d, ullong *r)
 {
+    r->l = 0;
+    r->h = 0;
     if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
-    {
-        r->l = 0;
-        r->h = 0;
         return 1;
-    }
-
     if((d->l == n->l) && (d->h == n->h))
     {
         r->l = 1;
-        r->h = 0;
         return 0;
     }
     ullong i,j,k;
-    i->l = d->l;
-    i->h = d->h;
-    while((i->h >= d->h) || ((i->h == d->h) && (i->l >= d->l)))
+    i.l = n->l;
+    i.h = n->h;
+    while((i.h >= d->h) || ((i.h == d->h) && (i.l >= d->l)))
     {
+        //printf("%lu - %lu = ",i.l, d->l);
         usub(&i,d,&j);
-        i->l = j->l;
-        i->h = j->h;
-        j->l = 1;
-        j->h = 0;
+        //printf("%lu\n",j.l);
+        i.l = j.l;
+        i.h = j.h;
+        j.l = 1;
+        j.h = 0;
         uadd(r,&j,&k);
-        r->l = k->l;
-        r->h = k->h;
+        r->l = k.l;
+        r->h = k.h;
+
     }
-    if(i->l || i->h)
+    if(i.l || i.h)
         return 1;
     return 0;
 }
@@ -274,67 +275,26 @@ int umult(ullong *a, ullong *b, ullong *c)
     return err;
 }
 
-int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
+int usub(ullong *x,ullong *y,ullong *z) 
 {
-    unsigned long plus, minus, bit = 0, tbit = 1;
-    if(*b == 0)
+    if((y->h > x->h) || ((y->h == x->h) && (y->l >x->l)))
     {
-        *c = *a;
-        return 0;
-    }
-    if(*a == 0)
-    {
-        *c = *b;
+        z->l=0;
+        z->h=0;
         return 1;
     }
-    if(*a == *b)
+    if((y->h == x->h) && (y->l == y->h))
     {
-        *c = *a;
+        z->l=0;
+        z->h=0;
         return 0;
     }
-    if(*a>*b)
-    {
-        *c = *a;
-        tbit = *b;
-        while(tbit)
-        {
-            tbit >>= 1;
-            bit = (bit << 1) | 1;
-        }
-        bit >>= 1;
-        minus = ~(*b)+1;
-        plus = *a;
-        while(minus)
-        {
-            *c ^= minus;
-            minus &= plus;
-            plus = *c;
-        }
-        *c &= bit;
-        return 0;
-    }
-    else
-    {
-        *c = *b;
-        tbit = *a;
-        while(tbit)
-        {
-            tbit >>= 1;
-            bit = (bit << 1) | 1;
-        }
-        bit >>= 1;
-        minus = ~(*a)+1;
-        plus = *b;
-        while(minus)
-        {
-            *c ^= minus;
-            minus &= plus;
-            plus = *c;
-        }
-        *c &= bit;
-        return 1;
-    }
+    y->l=~y->l + 1;
+    y->h=~y->h;
+    uadd(x,y,z);
+    return 0;
 }
+
 int ulmult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
@@ -497,25 +457,6 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
     return;
 }
 
-int usub(ullong *x,ullong *y,ullong *z) 
-{
-    int flag = 0;
-    unsigned long um=1;
-    if(x->h < y->h)
-    {
-        z->l = 0;
-        z->h = 0;
-        return 1;
-    }
 
-    flag = lsub(&(x->l),&(y->l),&(z->l));
-    lsub(&(x->h),&(y->h),&(z->h));
-    if(flag);
-    {
-        flag = lsub(&(z->h),&um,&(z->h));
-        return 0;
-    }
-    return 1;
-}
 
 
