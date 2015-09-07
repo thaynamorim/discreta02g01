@@ -90,6 +90,7 @@ int udiv(ullong *n, ullong *d,ullong *r);
 void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
+int isprime (long *n);
 
 int main(void)
 {
@@ -453,6 +454,18 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
     return;
 }
 
-
+int isprime(long *n)
+{
+    int c;
+    if (*n == 2 || *n == 3)
+        return 1;
+    for (c=2; c<=*n/2; c++)
+    {
+        if (*n%c ==0)
+            return 0;
+    }
+    if (c == *n)
+        return 1;
+}
 
 
