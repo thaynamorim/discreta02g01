@@ -101,17 +101,34 @@ int main(void)
    // if(ulet("170141183460469231731687303715884105729",&y))
     if(ulet("7",&y))
         printf("y estourou\n");
-    if(uadd(&x,&y,&z))
-        printf("OVERFLOW na soma!\n");
+    ulprint(&x);
+    printf(" + ");
+    ulprint(&y);
+    printf(" = ");
+    int i=uadd(&x,&y,&z);
+    ulprint(&z);
+    printf("[%d]\n",i);
+    ulprint(&x);
+    printf(" - ");
+    ulprint(&y);
+    printf(" = ");
+    i=usub(&x,&y,&z);
+    ulprint(&z);
+    printf("[%d]\n",i);
+    ulprint(&x);
+    printf(" x ");
+    ulprint(&y);
+    printf(" = ");
+    i=umult(&x,&y,&z);
+    ulprint(&z);
+    printf("[%d]\n",i);
     ulprint(&x);
     printf(" / ");
     ulprint(&y);
     printf(" = ");
-    int i=udiv(&x,&y,&z);
+    i=udiv(&x,&y,&z);
     ulprint(&z);
     printf("[%d]\n",i);
-    udiv(&x,&y,&z);
-    printf("\n");
     return EXIT_SUCCESS;
 }
 
@@ -276,6 +293,9 @@ int umult(ullong *a, ullong *b, ullong *c)
 
 int usub(ullong *x,ullong *y,ullong *z) 
 {
+    ullong w;
+    w.l = y->l;
+    w.h = y->h;
     if((y->h > x->h) || ((y->h == x->h) && (y->l >x->l)))
     {
         z->l=0;
@@ -288,8 +308,8 @@ int usub(ullong *x,ullong *y,ullong *z)
         z->h=0;
         return 0;
     }
-    y->l=~y->l + 1;
-    y->h=~y->h;
+    w.l=~w.l + 1;
+    w.h=~w.h;
     uadd(x,y,z);
     return 0;
 }
