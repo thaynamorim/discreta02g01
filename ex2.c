@@ -96,10 +96,10 @@ int main(void)
 {
     ullong x, y, z;
     //if(ulet("170141183460469231731687303715884105726",&x))
-    if(ulet("21",&x))
+    if(ulet("2157892357238957",&x))
         printf("x estourou\n");
    // if(ulet("170141183460469231731687303715884105729",&y))
-    if(ulet("7",&y))
+    if(ulet("6",&y))
         printf("y estourou\n");
     ulprint(&x);
     printf(" + ");
@@ -235,6 +235,7 @@ int udiv(ullong *n, ullong *d, ullong *r)
 {
     r->l = 0;
     r->h = 0;
+    int p = 0;
     if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
         return 1;
     if((d->l == n->l) && (d->h == n->h))
@@ -245,20 +246,22 @@ int udiv(ullong *n, ullong *d, ullong *r)
     ullong i,j,k;
     i.l = n->l;
     i.h = n->h;
-    while((i.h >= d->h) || ((i.h == d->h) && (i.l >= d->l)))
+    while(1)
     {
-        printf("!\n");
-        //printf("%lu - %lu = ",i.l, d->l);
         usub(&i,d,&j);
-        //printf("%lu\n",j.l);
         i.l = j.l;
         i.h = j.h;
+        ulprint(&i);
+        printf("\n\n");
         j.l = 1;
         j.h = 0;
         uadd(r,&j,&k);
         r->l = k.l;
         r->h = k.h;
-
+        if((i.l == 0 && i.h == 0) || (i.h < d->h))
+            break;
+        if((i.h == d->h) && (i.l < d->l))
+            break;
     }
     if(i.l || i.h)
         return 1;
@@ -309,9 +312,9 @@ int usub(ullong *x,ullong *y,ullong *z)
         z->h=0;
         return 0;
     }
-    w.l=~w.l + 1;
-    w.h=~w.h;
-    uadd(x,y,z);
+    w.l = ~w.l + 1;
+    w.h = ~w.h;
+    uadd(x,&w,z);
     return 0;
 }
 
