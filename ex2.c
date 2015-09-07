@@ -84,30 +84,32 @@ typedef struct sl
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
-unsigned long udiv(unsigned long dividendo, unsigned long divisor);
-int usub(ullong *x,ullong *y, ullong *z);
 int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
+unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+int ulmult(ullong *a, ullong *b, ullong *c);
+unsigned long udiv(unsigned long dividendo, unsigned long divisor);
+void ulprint(ullong *n);
+void lutoa(unsigned long n, char *ch);
+void mul2(char *in, char *out);
+void sadd(char *a, char *b, char *c);
 
 int main(void)
 {
     ullong x, y, z;
     if(ulet("170141183460469231731687303715884105726",&x))
+    //if(ulet("17",&x))
         printf("x estourou\n");
-    if(ulet("170141183460469231731687303715884105723",&y))
+    if(ulet("170141183460469231731687303715884105729",&y))
+    //if(ulet("11",&y))
         printf("y estourou\n");
     if(uadd(&x,&y,&z))
-        printf("OVERFLOW!\n");
-    printf("x: %lu | %lu\ny: %lu | %lu\nz: %lu | %lu\n",x.l,x.h,y.l,y.h,z.l,z.h);
-    /*ulet(&x,"170141183460469231731687303715884105726");
-    ulet(&y,"170141183460469231731687303715884105723");
-    uadd(&x,&y,&z);
-    printf("Aritmetica de exemplo: \n");
-    ulprint(x);
+        printf("OVERFLOW na soma!\n");
+    ulprint(&x);
     printf(" + ");
-    ulprint(y);
+    ulprint(&y);
     printf(" = ");
-    ulprint(z);
-    printf("\n");*/
+    ulprint(&z);
+    printf("\n");
     return EXIT_SUCCESS;
 }
 
@@ -165,7 +167,7 @@ int div2(char *in, char *out)
 
 int uadd(ullong *a, ullong *b, ullong *c)
 {
-    unsigned long carry = 1, i = 0, transfer = 0, ht = 0, tt = 0;
+    unsigned long carry = 1, transfer = 0, ht = 0, tt = 0;
     unsigned long x, y;
     c->l = 0;
     c->h = 0;
@@ -173,7 +175,6 @@ int uadd(ullong *a, ullong *b, ullong *c)
     y = b->l;
     while(carry && ~transfer)
     {
-        i++;
         c->l = x ^ y;
         carry = (x & y);
         if(carry >> (BUFFER/2-1))
@@ -184,11 +185,9 @@ int uadd(ullong *a, ullong *b, ullong *c)
     }
     x = a->h;
     y = b->h;
-    i = 0;
     carry = 1;
     while(carry && ~ht) 
     {
-        i++;
         c->h = x ^ y;
         carry = (x & y);
         if(carry >> (BUFFER/2-1))
@@ -197,11 +196,9 @@ int uadd(ullong *a, ullong *b, ullong *c)
         x = c->h;
         y = carry;
     }
-    i = 0;
     y = transfer;
     while(transfer && ~tt) 
     {
-        i++;
         c->h = x ^ y;
         transfer = (x & y);
         if(transfer >> (BUFFER/2-1))
@@ -248,29 +245,254 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
     }
     return resposta;
 }
-int usub(ullong *x,ullong *y,ullong *z) //z = x-y
-{
-    int flag = 0;
-    unsigned long um=1;
-    if(x->h < y->h)
-    {
-        z->l = 0;
-        z->h = 0;
-        return 1;
-    }
 
-    flag = lsub(&(x->l),&(y->l),&(z->l));
-    lsub(&(x->h),&(y->h),&(z->h));
-    if(flag);
+int umult(ullong *a, ullong *b, ullong *c)
+{
+    unsigned long i=0;
+    ullong utemp;
+    int err=0;
+
+    c->l = 0;
+    c->h = 0;
+
+    for(i=0;i<(b->l);i++)
     {
-        flag = lsub(&(z->h),&um,&(z->h));
-        return 0;
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
     }
-    return 1;
+    for(i=0;i<(b->h);i++)
+    {
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
+    }
+    return err;
 }
 
-int lsub(unsigned long *a, unsigned long *b, unsigned  long *c)
+int lsub(unsigned long *a, unsigned long *b, unsigned long *c)
 {
-    *c=*a-*b;
-    return 0;
+    unsigned long plus, minus, bit = 0, tbit = 1;
+    if(*b == 0)
+    {
+        *c = *a;
+        return 0;
+    }
+    if(*a == 0)
+    {
+        *c = *b;
+        return 1;
+    }
+    if(*a == *b)
+    {
+        *c = *a;
+        return 0;
+    }
+    if(*a>*b)
+    {
+        *c = *a;
+        tbit = *b;
+        while(tbit)
+        {
+            tbit >>= 1;
+            bit = (bit << 1) | 1;
+        }
+        bit >>= 1;
+        minus = ~(*b)+1;
+        plus = *a;
+        while(minus)
+        {
+            *c ^= minus;
+            minus &= plus;
+            plus = *c;
+        }
+        *c &= bit;
+        return 0;
+    }
+    else
+    {
+        *c = *b;
+        tbit = *a;
+        while(tbit)
+        {
+            tbit >>= 1;
+            bit = (bit << 1) | 1;
+        }
+        bit >>= 1;
+        minus = ~(*a)+1;
+        plus = *b;
+        while(minus)
+        {
+            *c ^= minus;
+            minus &= plus;
+            plus = *c;
+        }
+        *c &= bit;
+        return 1;
+    }
+}
+int ulmult(ullong *a, ullong *b, ullong *c)
+{
+    unsigned long i=0;
+    ullong utemp;
+    int err=0;
+
+    c->l = 0;
+    c->h = 0;
+    
+    for(i=0;i<(b->l);i++)
+    {
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
+    }
+    for(i=0;i<(b->h);i++)
+    {
+        err |= uadd(c,a,&utemp);
+        c->l = utemp.l;
+        c->h = utemp.h;
+        if(err)
+            break;
+    }
+    return err;
+}
+
+void ulprint(ullong *n)
+{
+    if(n->h == 0)
+    {
+        printf("%lu",n->l);
+        return;
+    }
+    char l[BUFFER] = "", h[BUFFER] = "", t[BUFFER] = "";
+    unsigned i, j;
+    if(n->l)
+        lutoa(n->l,l);
+    lutoa(n->h,t);
+    for(i=0;i<BUFFER/2;i++)
+    {
+        mul2(t,h);
+        for(j=0;j<BUFFER;j++)
+        {
+            t[j] = h[j];
+            if(t[j] == '\0')
+                break;
+        }
+    }
+    if(n->l == 0)
+    {
+        printf("%s",h);
+        return;
+    }
+    /*numero de digitos do high >= numero de digitos do low (decimal)*/
+    sadd(h,l,t);
+    printf("%s",t);
+    return;
+}
+
+void lutoa(unsigned long lu, char *ch)
+{
+    unsigned long n = lu, d, i = 1;
+    while(n >= 10)
+    {
+        n /= 10;
+        i *= 10;
+    }
+    n = lu;
+    while(n)
+    {
+        d = n / i;
+        *ch = d + '0';
+        n %= i;
+        i /= 10;
+        ++ch;
+    }
+    *ch = '\0';
+	return;
+}
+
+void mul2(char *in, char *out)
+{
+    int nval = 0, aval, i = 0;
+    if(((*in-'0')*2) >= 10)
+    {
+        *out = '1';
+        ++out;
+    }
+    while(*in != '\0')
+    {
+        ++in;
+        ++out;
+        ++i;
+    }
+    *out = '\0';
+    while(i)
+    {
+        --in;
+        --out;
+        --i;
+        aval = nval;
+        if(((*in - '0')*2) >= 10)
+        {
+            *out = (*in - '5')*2 + aval + '0';
+            nval = 1;
+        }
+        else
+        {
+            *out = (*in - '0')*2 + aval + '0';
+            nval = 0;
+        }
+    }
+    return;
+}
+
+void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
+{
+    int i = 0, s = 0, carry = 0, j = 0;
+    while(*a != '\0')
+    {
+        *c = *a;
+        ++a;
+        ++c;
+        ++j;
+    }
+    *c = '\0';
+    while(*b != '\0')
+    {
+        ++b;
+        ++i;
+    }
+    while(i)
+    {
+        --i;
+        --j;
+        --c;
+        --b;
+        s = *c - '0' + *b - '0' + carry;
+        if(s>=10)
+        {
+            carry = 1;
+            s %= 10;
+        }
+        else
+            carry = 0;
+        *c = s + '0';
+    }
+    while(j)
+    {
+        --c;
+        --j;
+        if(carry)
+        {
+            *c += carry;
+            carry = 0;
+        }
+    }
+    return;
 }
