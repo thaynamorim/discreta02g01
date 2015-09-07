@@ -370,7 +370,7 @@ void ulprint(ullong *n)
         printf("%lu",n->l);
         return;
     }
-    char l[BUFFER], h[BUFFER], t[BUFFER];
+    char l[BUFFER] = "", h[BUFFER] = "", t[BUFFER] = "";
     unsigned i, j;
     if(n->l)
         lutoa(n->l,l);
@@ -454,7 +454,7 @@ void mul2(char *in, char *out)
 
 void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 {
-    int i = 0, s, carry = 0, j = 0;
+    int i = 0, s = 0, carry = 0, j = 0;
     while(*a != '\0')
     {
         *c = *a;
@@ -478,8 +478,10 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
         if(s>=10)
         {
             carry = 1;
-            s /= 10;
+            s %= 10;
         }
+        else
+            carry = 0;
         *c = s + '0';
     }
     while(j)
