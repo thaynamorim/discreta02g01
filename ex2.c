@@ -213,40 +213,39 @@ int uadd(ullong *a, ullong *b, ullong *c)
     return 0;
 }
 
-unsigned long udiv(unsigned long dividendo, unsigned long divisor) 
+nt udiv(ullong *n, ullong *d, ullong *r)
 {
-    unsigned long denom=divisor;
-    unsigned long atual = 1;
-    unsigned long resposta=0;
-
-    if ( denom > dividendo)
-        return 0;
-
-    if ( denom == dividendo)
+    if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
+    {
+        r->l = 0;
+        r->h = 0;
         return 1;
-
-    while (denom <= dividendo) 
-    {
-        denom <<= 1;
-        atual <<= 1;
     }
 
-    denom >>= 1;
-    atual >>= 1;
-
-    while (atual!=0) 
+    if((d->l == n->l) && (d->h == n->h))
     {
-        if ( dividendo >= denom) 
-        {
-            dividendo -= denom;
-            resposta |= atual;
-        }
-        atual >>= 1;
-        denom >>= 1;
+        r->l = 1;
+        r->h = 0;
+        return 0;
     }
-    return resposta;
+    ullong i,j,k;
+    i->l = d->l;
+    i->h = d->h;
+    while((i->h >= d->h) || ((i->h == d->h) && (i->l >= d->l)))
+    {
+        usub(&i,d,&j);
+        i->l = j->l;
+        i->h = j->h;
+        j->l = 1;
+        j->h = 0;
+        uadd(r,&j,&k);
+        r->l = k->l;
+        r->h = k->h;
+    }
+    if(i->l || i->h)
+        return 1;
+    return 0;
 }
-
 int umult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
@@ -518,3 +517,5 @@ int usub(ullong *x,ullong *y,ullong *z)
     }
     return 1;
 }
+
+
