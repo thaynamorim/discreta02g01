@@ -92,6 +92,7 @@ void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
 void sadd(char *a, char *b, char *c);
+int usub(ullong *x,ullong *y,ullong *z);
 
 int main(void)
 {
@@ -495,4 +496,25 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
         }
     }
     return;
+}
+
+int usub(ullong *x,ullong *y,ullong *z) 
+{
+    int flag = 0;
+    unsigned long um=1;
+    if(x->h < y->h)
+    {
+        z->l = 0;
+        z->h = 0;
+        return 1;
+    }
+
+    flag = lsub(&(x->l),&(y->l),&(z->l));
+    lsub(&(x->h),&(y->h),&(z->h));
+    if(flag);
+    {
+        flag = lsub(&(z->h),&um,&(z->h));
+        return 0;
+    }
+    return 1;
 }
