@@ -116,15 +116,13 @@ int main(void)
 /**
  * \ingroup GroupUnique
  *    
- * \brief
+ * \brief transforma de string pra ullong
  * 
- * \details 
- * 
- * \pre
+ * \details esta função pega um valor grande de string grande e coloca em uma variavel tipo ullong 
  *
- * \param[
+ * \param[in] char numero escrito por extenso
  *             
- * \param[
+ * \param[out] ullong 
  *                 
  * \retval 0 problema resolvido.
  *                     
@@ -188,21 +186,22 @@ int div2(char *in, char *out)
 /**
  * \ingroup GroupUnique
  * 
- * \brief
+ * \brief Esta função soma duas variaveis ullong.
  * 
- * \details
+ * \details Soma duas variaveis ullong e da o resultado.
  * 
- * \pre
- * 
- * \param[
- * 
- * \param[
+ * \param[in] a A variavel \a a  Primeiro numero da soma.
+ *  
+ * \param[in] b A variavel \a b Segundo numero da soma.
+ *
+ * \param[out] c A variavel \a c Resultado da soma de a e b.
  * 
  * \retval 0 problema resolvido.
  * 
  * \retval 1 problema com overflow ou underflow.
  *   
  */
+
 int uadd(ullong *a, ullong *b, ullong *c)
 {
     unsigned long carry = 1, transfer = 0, ht = 0, tt = 0;
@@ -288,19 +287,19 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
 /**
  *  \ingroup GroupUnique
  *
- *  \brief
+ *  \brief Multiplica 2 variaveis ullong.
  *
- *  \details
+ *  \details  Multiplica a variavel a pela variavel b dando c como resultado.
  *
- *  \pre
+ *  \param[in] a A variavel \a a primeiro numero da multiplicação.
  *
- *  \param
+ *  \param[in] b A variavel \a b segundo numero da multiplicação.
  *
- *  \param
+ *  \param[out] c A variavel \a c resultado da multiplicação entre a e b.
  *
- *  \retval 0
+ *  \retval 0 problema resolvido.
  *
- *  \retval 1
+ *  \retval 1 problema com overflow.
  *
  */
 
