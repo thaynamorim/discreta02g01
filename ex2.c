@@ -247,6 +247,7 @@ int udiv(ullong *n, ullong *d, ullong *r)
     i.h = n->h;
     while((i.h >= d->h) || ((i.h == d->h) && (i.l >= d->l)))
     {
+        printf("!\n");
         //printf("%lu - %lu = ",i.l, d->l);
         usub(&i,d,&j);
         //printf("%lu\n",j.l);
