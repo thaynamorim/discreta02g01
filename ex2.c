@@ -697,6 +697,7 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 int isprime(ullong *n)
 {
     ullong c, dois, metade, j;
+    unsigned long um;
     dois.l=2;
     dois.h=0;
     c.l=3;
@@ -711,7 +712,7 @@ int isprime(ullong *n)
 
     metade.l = n->l >> 1;
     if(n->h && 1)
-        metade.l |= 1<<(BUFFER/2-1);
+        metade.l |= um << (BUFFER/2 - 1) ;
     metade.h = n->h >> 1;
 
     while(1)
