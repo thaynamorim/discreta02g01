@@ -116,11 +116,11 @@ int main(void)
 /**
  * \ingroup GroupUnique
  *    
- * \brief transforma de string pra ullong
+ * \brief transforma de string pra ullong.
  * 
- * \details esta função pega um valor grande de string grande e coloca em uma variavel tipo ullong 
+ * \details esta função pega um valor grande de string grande e coloca em uma variavel tipo ullong. 
  *
- * \param[in] char numero escrito por extenso
+ * \param[in] char numero escrito por extenso.
  *             
  * \param[out] ullong 
  *                 
@@ -185,7 +185,7 @@ int div2(char *in, char *out)
 /**
  * \ingroup GroupUnique
  * 
- * \brief Esta função soma duas variaveis ullong.
+ * \brief Esta funcaoo soma duas variaveis ullong.
  * 
  * \details Soma duas variaveis ullong e da o resultado.
  * 
@@ -289,11 +289,11 @@ unsigned long udiv(unsigned long dividendo, unsigned long divisor)
  *
  *  \details  Multiplica a variavel a pela variavel b dando c como resultado.
  *
- *  \param[in] a A variavel \a a primeiro numero da multiplicação.
+ *  \param[in] a A variavel \a a primeiro numero da multiplicacao.
  *
- *  \param[in] b A variavel \a b segundo numero da multiplicação.
+ *  \param[in] b A variavel \a b segundo numero da multiplicacao.
  *
- *  \param[out] c A variavel \a c resultado da multiplicação entre a e b.
+ *  \param[out] c A variavel \a c resultado da multiplicacao entre a e b.
  *
  *  \retval 0 problema resolvido.
  *
@@ -429,19 +429,15 @@ void ulprint(ullong *n)
 /**
  * \ingroup GroupUnique
  * 
- * \brief
+ * \brief Converte unsigned long para string.
  * 
- * \details
+ * \details Esta funcao converte uma variavel unsigned long para uma string.
  * 
- * \pre
+ * \param[in] lu A variavel \a lu vairavel unsigned long para ser convertida
  * 
- * \param[
+ * \param[out] ch 
  * 
- * \param[
- * 
- * \retval 0 problema resolvido.
- * 
- * \retval 1 problema com overflow ou underflow.
+ * \retval void A funcao em si nao retorna nada.
  *
  */
 
@@ -504,19 +500,19 @@ void mul2(char *in, char *out)
 /**
  * \ingroup GroupUnique
  * 
- * \brief
+ * \brief soma 2 numeros em string.
  *  
- * \details
+ * \details Soma 2 numeros a e b em formato de string e da o resultado c.
  * 
- * \pre
+ * \param[in] a A string \a a primeiro numero da soma. 
  * 
- * \param[
- * 
- * \param[
+ * \param[in] b A string \a b segundo numero da soma.
+ *
+ * \param[out] c Resultado da soma.
  * 
  * \retval 0 problema resolvido.
  * 
- * \retval 1 problema com overflow ou underflow.
+ * \retval 1 problema com overflow.
  * 
  */ 
 
