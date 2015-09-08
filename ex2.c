@@ -91,6 +91,8 @@ void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
 int isprime (long *n);
+void sadd(char *a, char *b, char *c);
+
 
 int main(void)
 {
@@ -126,8 +128,9 @@ int main(void)
     printf(" / ");
     ulprint(&y);
     printf(" = ");
-    i=udiv(&x,&y,&z);
-    ulprint(&z);
+    //i=udiv(&x,&y,&z);
+    //ulprint(&z);
+    printf("[Under construction!]");
     printf("[%d]\n",i);
     return EXIT_SUCCESS;
 }
@@ -323,7 +326,6 @@ int udiv(ullong *n, ullong *d, ullong *r)
  *
  */
 
->>>>>>> feature-lucas
 int umult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
@@ -367,16 +369,12 @@ int usub(ullong *x,ullong *y,ullong *z)
     {
         z->l=0;
         z->h=0;
-    {
-        if(*n%c == 0)
-            return 0;
+        return 0;
     }
     w.l = ~w.l + 1;
     w.h = ~w.h;
     uadd(x,&w,z);
     return 0;
-}
-
 }
 
 void ulprint(ullong *n)
@@ -559,6 +557,7 @@ int isprime(long *n)
     }
     if (c == *n)
         return 1;
+    return 0;
 }
 
 
