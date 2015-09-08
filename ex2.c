@@ -91,6 +91,8 @@ void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
 int isprime (long *n);
+void sadd(char *a, char *b, char *c);
+
 
 int main(void)
 {
@@ -98,7 +100,7 @@ int main(void)
     //if(ulet("170141183460469231731687303715884105726",&x))
     if(ulet("2157892357238957",&x))
         printf("x estourou\n");
-   // if(ulet("170141183460469231731687303715884105729",&y))
+    // if(ulet("170141183460469231731687303715884105729",&y))
     if(ulet("6",&y))
         printf("y estourou\n");
     ulprint(&x);
@@ -126,11 +128,29 @@ int main(void)
     printf(" / ");
     ulprint(&y);
     printf(" = ");
-    i=udiv(&x,&y,&z);
-    ulprint(&z);
+    //i=udiv(&x,&y,&z);
+    //ulprint(&z);
+    printf("[Under construction!]");
     printf("[%d]\n",i);
     return EXIT_SUCCESS;
 }
+
+/**
+ * \ingroup GroupUnique
+ *    
+ * \brief transforma de string pra ullong.
+ * 
+ * \details esta função pega um valor grande de string grande e coloca em uma variavel tipo ullong. 
+ *
+ * \param[in] char numero escrito por extenso.
+ *             
+ * \param[out] ullong 
+ *                 
+ * \retval 0 problema resolvido.
+ *                     
+ * \retval 1 problema com overflow ou underflow.
+ *                                                      
+ */
 
 int ulet(char *in, ullong *out)
 {
@@ -205,6 +225,25 @@ int div2(char *in, char *out)
     return (nval/5);
 }
 
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief Esta funcaoo soma duas variaveis ullong.
+ * 
+ * \details Soma duas variaveis ullong e da o resultado.
+ * 
+ * \param[in] a A variavel \a a  Primeiro numero da soma.
+ *  
+ * \param[in] b A variavel \a b Segundo numero da soma.
+ *
+ * \param[out] c A variavel \a c Resultado da soma de a e b.
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow.
+ *   
+ */
+
 int uadd(ullong *a, ullong *b, ullong *c)
 {
     unsigned long carry = 1, transfer = 0, ht = 0, tt = 0;
@@ -272,40 +311,27 @@ int uadd(ullong *a, ullong *b, ullong *c)
 
 int udiv(ullong *n, ullong *d, ullong *r)
 {
-    r->l = 0;
-    r->h = 0;
-    int p = 0;
-    if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
-        return 1;
-    if((d->l == n->l) && (d->h == n->h))
-    {
-        r->l = 1;
-        return 0;
-    }
-    ullong i,j,k;
-    i.l = n->l;
-    i.h = n->h;
-    while(1)
-    {
-        usub(&i,d,&j);
-        i.l = j.l;
-        i.h = j.h;
-        ulprint(&i);
-        printf("\n\n");
-        j.l = 1;
-        j.h = 0;
-        uadd(r,&j,&k);
-        r->l = k.l;
-        r->h = k.h;
-        if((i.l == 0 && i.h == 0) || (i.h < d->h))
-            break;
-        if((i.h == d->h) && (i.l < d->l))
-            break;
-    }
-    if(i.l || i.h)
-        return 1;
     return 0;
 }
+
+/**
+ *  \ingroup GroupUnique
+ *
+ *  \brief Multiplica 2 variaveis ullong.
+ *
+ *  \details  Multiplica a variavel a pela variavel b dando c como resultado.
+ *
+ *  \param[in] a A variavel \a a primeiro numero da multiplicacao.
+ *
+ *  \param[in] b A variavel \a b segundo numero da multiplicacao.
+ *
+ *  \param[out] c A variavel \a c resultado da multiplicacao entre a e b.
+ *
+ *  \retval 0 problema resolvido.
+ *
+ *  \retval 1 problema com overflow.
+ *
+ */
 
 int umult(ullong *a, ullong *b, ullong *c)
 {
@@ -371,9 +397,7 @@ int usub(ullong *x,ullong *y,ullong *z)
     {
         z->l=0;
         z->h=0;
-    {
-        if(*n%c == 0)
-            return 0;
+        return 0;
     }
     w.l = ~w.l + 1;
     w.h = ~w.h;
@@ -429,6 +453,21 @@ void ulprint(ullong *n)
     return;
 }
 
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief Converte unsigned long para string.
+ * 
+ * \details Esta funcao converte uma variavel unsigned long para uma string.
+ * 
+ * \param[in] lu A variavel \a lu vairavel unsigned long para ser convertida
+ * 
+ * \param[out] ch 
+ * 
+ * \retval void A funcao em si nao retorna nada.
+ *
+ */
+
 void lutoa(unsigned long lu, char *ch)
 {
     unsigned long n = lu, d, i = 1;
@@ -447,7 +486,7 @@ void lutoa(unsigned long lu, char *ch)
         ++ch;
     }
     *ch = '\0';
-	return;
+    return;
 }
 
 
@@ -505,6 +544,25 @@ void mul2(char *in, char *out)
     return;
 }
 
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief soma 2 numeros em string.
+ *  
+ * \details Soma 2 numeros a e b em formato de string e da o resultado c.
+ * 
+ * \param[in] a A string \a a primeiro numero da soma. 
+ * 
+ * \param[in] b A string \a b segundo numero da soma.
+ *
+ * \param[out] c Resultado da soma.
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow.
+ * 
+ */ 
+
 void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 {
     int i = 0, s = 0, carry = 0, j = 0;
@@ -550,17 +608,37 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
     return;
 }
 
-int isprime(long *n)
+
+int isprime(ullong *n)
 {
-    int c;
-    if (*n == 2 || *n == 3)
+    ullong c, dois, metade;
+    dois.l=2;
+    dois.h=0;
+    c.l=3;
+    c.h=0;
+
+    if((n->h == 0) && ((n->l == 0) || (n->l == 1)))
+        return 0;
+    if((n->h == 0) && ((n->l == 2) || (n->l == 3)))
         return 1;
-    for (c=2; c<=*n/2; c++)
+    if (~(n->l & 1))
+        return 0;
+
+    metade.l = n->l >> 1;
+    if(n->h && 1)
+        metade.l |= 1<<(BUFFER/2-1);
+    metade.h = n->h >> 1;
+
+    while(1)
     {
-        if (*n%c ==0)
+        if((c->h > metade.h)||((c->h==metade.h)&&(c->l>metade.l)))
+            break;
+        if(~(udiv(n,&c)))
             return 0;
     }
+
     if (c == *n)
         return 1;
+    return 0;
 }
 
