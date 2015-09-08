@@ -98,7 +98,7 @@ int main(void)
 {
     ullong x, y, z;
     //if(ulet("170141183460469231731687303715884105726",&x))
-    if(ulet("176769",&x))
+    if(ulet("18446744073709551617",&x))
         printf("x estourou\n");
     // if(ulet("170141183460469231731687303715884105729",&y))
     if(ulet("2",&y))
@@ -125,13 +125,10 @@ int main(void)
     ulprint(&z);
     printf("[%d]\n",i);
     ulprint(&x);
-    printf(" / ");
-    ulprint(&y);
-    printf(" = ");
-    i=udiv(&x,&y);
-    //ulprint(&z);
-    printf("[Under construction!]");
-    printf("[%d]\n",i);
+    i = isprime(&x);
+    if(i == 0)
+        printf(" nao");
+    printf(" eh primo.\n");
     return EXIT_SUCCESS;
 }
 
@@ -698,29 +695,30 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 int isprime(ullong *n)
 {
     ullong c, dois, metade, j;
-    unsigned long um;
+    unsigned long max = 1;
     dois.l=2;
     dois.h=0;
     c.l=3;
     c.h=0;
+    max <<= (BUFFER/2-1);
 
     if((n->h == 0) && ((n->l == 0) || (n->l == 1)))
         return 0;
     if((n->h == 0) && ((n->l == 2) || (n->l == 3)))
         return 1;
-    if (~(n->l & 1))
+    if ((n->l & 1) == 0)
         return 0;
 
     metade.l = n->l >> 1;
     if(n->h && 1)
-        metade.l |= um << (BUFFER/2 - 1) ;
+        metade.l |= max;
     metade.h = n->h >> 1;
-
+    
     while(1)
     {
         if((c.h > metade.h)||((c.h==metade.h)&&(c.l>metade.l)))
             break;
-        if(~(udiv(n,&c)))
+        if((udiv(n,&c)) == 0)
             return 0;
         uadd(&c,&dois,&j);
         c.l = j.l;
