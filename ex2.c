@@ -272,38 +272,6 @@ int uadd(ullong *a, ullong *b, ullong *c)
 
 int udiv(ullong *n, ullong *d, ullong *r)
 {
-    r->l = 0;
-    r->h = 0;
-    int p = 0;
-    if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
-        return 1;
-    if((d->l == n->l) && (d->h == n->h))
-    {
-        r->l = 1;
-        return 0;
-    }
-    ullong i,j,k;
-    i.l = n->l;
-    i.h = n->h;
-    while(1)
-    {
-        usub(&i,d,&j);
-        i.l = j.l;
-        i.h = j.h;
-        ulprint(&i);
-        printf("\n\n");
-        j.l = 1;
-        j.h = 0;
-        uadd(r,&j,&k);
-        r->l = k.l;
-        r->h = k.h;
-        if((i.l == 0 && i.h == 0) || (i.h < d->h))
-            break;
-        if((i.h == d->h) && (i.l < d->l))
-            break;
-    }
-    if(i.l || i.h)
-        return 1;
     return 0;
 }
 
