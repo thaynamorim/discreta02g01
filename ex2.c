@@ -609,6 +609,18 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 }
 
 
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief Verifica se um numero ullong e primo
+ * 
+ * \details Esta funcao executa um algoritmo de verificacao de numero primo atraves de operacoes binarias.
+ * 
+ * \param[in] n A variavel \a *n eh o numero a ser verificado
+ * 
+ * \retval void A funcao em si nao retorna nada.
+ *
+ */
 int isprime(ullong *n)
 {
     ullong c, dois, metade;
