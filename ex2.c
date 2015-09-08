@@ -84,10 +84,9 @@ typedef struct sl
 int ulet(char *in, ullong *out);
 int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
-int lsub(unsigned long *a, unsigned long *b, unsigned long *c);
 int ulmult(ullong *a, ullong *b, ullong *c);
-int udiv(ullong *n, ullong *d,ullong *r);
 void ulprint(ullong *n);
+int udiv(ullong *dividend, ullong *divisor);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
 void sadd(char *a, char *b, char *c);
@@ -108,10 +107,9 @@ int main(void)
     printf(" / ");
     ulprint(&y);
     printf(" = ");
-    int i=udiv(&x,&y,&z);
+    int i=udiv(&x,&y);
     ulprint(&z);
     printf("[%d]\n",i);
-    udiv(&x,&y,&z);
     printf("\n");
     return EXIT_SUCCESS;
 }
@@ -215,35 +213,82 @@ int uadd(ullong *a, ullong *b, ullong *c)
     return 0;
 }
 
-int udiv(ullong *n, ullong *d, ullong *r)
-{
-    r->l = 0;
-    r->h = 0;
-    if((d->h > n->h) || ((d->h == n->h) && (d->l >n->l)))
-        return 1;
-    if((d->l == n->l) && (d->h == n->h))
-    {
-        r->l = 1;
+int udiv(ullong *dividend, ullong *divisor)
+{ 
+    ullong denom;
+    int i = 0,d;
+    denom.l = divisor->l;
+    denom.h = divisor->h;
+    ullong current;
+    current.l = 1;
+    current.h = 0;
+
+    if ((denom.h > dividend->h) || ((denom.h == dividend->h) && (denom.l > dividend->l)))
         return 0;
-    }
-    ullong i,j,k;
-    i.l = n->l;
-    i.h = n->h;
-    while((i.h >= d->h) || ((i.h == d->h) && (i.l >= d->l)))
+
+    if ((denom.h == dividend->h)&&(denom.l == dividend->l))
+        return 1;
+    while(1)
     {
-        //printf("%lu - %lu = ",i.l, d->l);
-        usub(&i,d,&j);
-        //printf("%lu\n",j.l);
-        i.l = j.l;
-        i.h = j.h;
-        j.l = 1;
-        j.h = 0;
-        uadd(r,&j,&k);
-        r->l = k.l;
-        r->h = k.h;
+        ++i;
+        denom.h <<= 1;
+        if(denom.l && 1<<(BUFFER/2-1))
+        {
+            denom.h |= 1;
+        }
+        denom.l <<= 1;
+        current.h <<= 1;
+        if(current.l && 1<<(BUFFER/2-1))
+        {
+            current.h |= 1;
+        }
+        current.l <<= 1;
+        if((denom.h == dividend->h) && (denom.l <= dividend->l))
+            break;
+        if(denom.h <= dividend->h)
+            break;
+    }
+    denom.l >>= 1;
+    if(denom.h && 1)
+        denom.l |= 1<<(BUFFER/2-1);
+    denom.h >>= 1;
+    current.l >>= 1;
+    if(current.h && 1)
+        current.l |= 1<<(BUFFER/2-1);
+    current.h >>= 1;
+
+    ullong utemp, j;
+    utemp.l = dividend->l;
+    utemp.h = dividend->h;
+    while ((current.l != 0) || (current.h != 0))
+    {
+        if (denom.h <= utemp.h)    
+        {
+            printf("\n");
+            usub(&utemp,&denom, &j);
+            ulprint(&j);
+            printf("\n");
+            utemp.l = j.l;
+            utemp.h = j.h;
+        }
+        else
+            if((denom.h == utemp.h) && (denom.l <= utemp.l))
+            {
+                usub(&utemp,&denom, &j);
+                utemp.l = j.l;
+                utemp.h = j.h;
+            }
+        denom.l >>= 1;
+        if(denom.h && 1)
+            denom.l |= 1<<(BUFFER/2-1);
+        denom.h >>= 1;
+        current.l >>= 1;
+        if(current.h && 1)
+            current.l |= 1<<(BUFFER/2-1);
+        current.h >>= 1;
 
     }
-    if(i.l || i.h)
+    if(utemp.h || utemp.l)
         return 1;
     return 0;
 }
