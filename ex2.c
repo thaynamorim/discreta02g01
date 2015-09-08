@@ -98,10 +98,10 @@ int main(void)
 {
     ullong x, y, z;
     //if(ulet("170141183460469231731687303715884105726",&x))
-    if(ulet("2157892357238957",&x))
+    if(ulet("176769",&x))
         printf("x estourou\n");
     // if(ulet("170141183460469231731687303715884105729",&y))
-    if(ulet("6",&y))
+    if(ulet("2",&y))
         printf("y estourou\n");
     ulprint(&x);
     printf(" + ");
@@ -128,7 +128,7 @@ int main(void)
     printf(" / ");
     ulprint(&y);
     printf(" = ");
-    //i=udiv(&x,&y,&z);
+    i=udiv(&x,&y);
     //ulprint(&z);
     printf("[Under construction!]");
     printf("[%d]\n",i);
@@ -312,42 +312,45 @@ int uadd(ullong *a, ullong *b, ullong *c)
 int udiv(ullong *dividend, ullong *divisor)
 {
     ullong denom;
-    int i = 0,d;
+    int i = 0, f = 0;
+    unsigned long max = 1;
     denom.l = divisor->l;
     denom.h = divisor->h;
     ullong current;
     current.l = 1;
     current.h = 0;
+    max <<= (BUFFER/2-1);
 
     if ((denom.h > dividend->h) || ((denom.h == dividend->h) && (denom.l > dividend->l)))
         return 0;
 
     if ((denom.h == dividend->h)&&(denom.l == dividend->l))
         return 1;
+
     while(1)
     {
+        if((denom.h == dividend->h) && (denom.l > dividend->l))
+            break;
+        if(denom.h > dividend->h)
+            break;
         ++i;
         denom.h <<= 1;
-        if(denom.l && 1<<(BUFFER/2-1))
-        {
+        if(denom.l >> (BUFFER/2-1))
             denom.h |= 1;
-        }
         denom.l <<= 1;
         current.h <<= 1;
-        if(current.l && 1<<(BUFFER/2-1))
-        {
+        if(current.l >> (BUFFER/2-1))
             current.h |= 1;
-        }
         current.l <<= 1;
-        if((denom.h == dividend->h) && (denom.l <= dividend->l))
-            break;
-        if(denom.h <= dividend->h)
-            break;
     }
     denom.l >>= 1;
+    if(denom.h && 1)
+        denom.l |= max;
+    denom.h >>= 1;
+
     current.l >>= 1;
     if(current.h && 1)
-        current.l |= 1<<(BUFFER/2-1);
+        current.l |= max;
     current.h >>= 1;
 
     ullong utemp, j;
@@ -355,29 +358,27 @@ int udiv(ullong *dividend, ullong *divisor)
     utemp.h = dividend->h;
     while ((current.l != 0) || (current.h != 0))
     {
-        if (denom.h <= utemp.h)
+        //se utemp >= denom
+        f = 0;
+        if((utemp.h == denom.h) && (utemp.l == denom.l))
+            f |= 1;
+        if(utemp.h > denom.h)
+            f |= 1;
+        if((utemp.h == denom.h) && (utemp.l > denom.l))
+            f |= 1;
+        if(f)
         {
-            printf("\n");
-            usub(&utemp,&denom, &j);
-            ulprint(&j);
-            printf("\n");
+            f |= usub(&utemp,&denom, &j);
             utemp.l = j.l;
             utemp.h = j.h;
         }
-        else
-            if((denom.h == utemp.h) && (denom.l <= utemp.l))
-            {
-                usub(&utemp,&denom, &j);
-                utemp.l = j.l;
-                utemp.h = j.h;
-            }
         denom.l >>= 1;
         if(denom.h && 1)
-            denom.l |= 1<<(BUFFER/2-1);
+            denom.l |= max;
         denom.h >>= 1;
         current.l >>= 1;
         if(current.h && 1)
-            current.l |= 1<<(BUFFER/2-1);
+            current.l |= max;
         current.h >>= 1;
 
     }
