@@ -273,6 +273,9 @@ int umult(ullong *a, ullong *b, ullong *c)
     ullong utemp;
     int err=0;
 
+    c->l = 0;
+    c->h = 0;
+
     for(i=0;i<(b->l);i++)
     {
         err |= uadd(c,a,&utemp);
