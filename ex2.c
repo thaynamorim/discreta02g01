@@ -161,6 +161,27 @@ int ulet(char *in, ullong *out)
     return 0;
 }
 
+
+/**
+ *
+ * \ingroup GroupUnique
+ *
+ * \brief Esta funcao divide um numero por dois. 
+ *
+ * \details A funcao recebe um strig de numero e o divide por dois.
+ *
+ * \pre A variavel \a out precisa ter o mesmo numero de digitos que a variavel \a in.
+ *
+ * \param[in] in A variavel \a in e uma strig de entrada que e dividida por 2 
+ * 
+ * \param[out] out A variavel \a out recebe o valor da variavel \a in.
+ *
+ * \retval 0 Se a divisao nao tiver resto.
+ * 
+ * \retval 1 Se a divisao tiver resto.
+ *
+ */
+
 int div2(char *in, char *out)
 {
     int nval = 0, aval;
@@ -231,6 +252,24 @@ int uadd(ullong *a, ullong *b, ullong *c)
     return 0;
 }
 
+
+/**
+ *
+ * \ingroup GroupUnique
+ *
+ * \brief Esta funcao divide dois numeros. 
+ *
+ * \details A funcao divide um long por outro e retorna o valor da divisao inteira.
+ *
+ * \param[in] n A variavel \a dividendo armazena o valor do dividendo.  
+ * \param[in] d  A variavel \a divisor armazeno o valor do divisor.
+ *
+ * \retval 0 Se a divisao nao tiver resto.
+ * 
+ * \retval 1 Se a divisao tiver resto.
+ *
+ **/
+
 int udiv(ullong *n, ullong *d, ullong *r)
 {
     r->l = 0;
@@ -267,6 +306,7 @@ int udiv(ullong *n, ullong *d, ullong *r)
         return 1;
     return 0;
 }
+
 int umult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
@@ -295,6 +335,27 @@ int umult(ullong *a, ullong *b, ullong *c)
     return err;
 }
 
+
+/**
+ *
+ * \ingroup GroupUnique
+ *
+ * \brief Essa funcao subtrai um numero de outro.
+ *
+ * \details Atraves de operacoes binarias a funcao subtrai dois numeros.
+ *
+ * \param[in] x A variavel \a x recebe o minuendo.
+ * 
+ * \param[in] y A variavel \a out recebe o subtraendo.
+ *
+ * \param[out] z A variavel \a z armazena o valor da subtracao.
+ *
+ * \retval 0 Se a variavel \a x for maior que a \a y.
+ * 
+ * \retval 1 Se a variavel \a x for menor que a \a y.
+ *
+ **/
+
 int usub(ullong *x,ullong *y,ullong *z) 
 {
     ullong w;
@@ -319,6 +380,21 @@ int usub(ullong *x,ullong *y,ullong *z)
     uadd(x,&w,z);
     return 0;
 }
+
+
+/**
+ *
+ * \ingroup GroupUnique
+ *
+ * \brief Esta funcao imprime o numero. 
+ *
+ * \details A funcao concatena o high e o low e imprime o numero.
+ *
+ * \param[in] n  Recebe o valor de entrada. \a
+ * 
+ * \retval void A funcao em si nao retorna nada.
+ *
+ **/
 
 void ulprint(ullong *n)
 {
@@ -373,6 +449,26 @@ void lutoa(unsigned long lu, char *ch)
     *ch = '\0';
 	return;
 }
+
+
+/**
+ *
+ * \ingroup GroupUnique
+ *
+ * \brief Esta funcao multiplica um numero por 2.
+ *
+ * \details A funcao recebe um string de numero e a multiplica por dois.
+ *
+ * \pre E uma funcao interna da lprint.
+ *
+ * \param[in] in  A variavel \a in e a string de entrada que e multiplicada por 2.
+ * 
+ * \param[out] out A variavel \a out recebe o valor da variavel \a in multiplicada por dois.
+ *
+ * \retval void A funcao em si nao retorna nada.
+ * 
+ *
+ **/
 
 void mul2(char *in, char *out)
 {
@@ -467,5 +563,4 @@ int isprime(long *n)
     if (c == *n)
         return 1;
 }
-
 
