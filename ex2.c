@@ -100,7 +100,7 @@ int main(void)
     //if(ulet("170141183460469231731687303715884105726",&x))
     if(ulet("2157892357238957",&x))
         printf("x estourou\n");
-   // if(ulet("170141183460469231731687303715884105729",&y))
+    // if(ulet("170141183460469231731687303715884105729",&y))
     if(ulet("6",&y))
         printf("y estourou\n");
     ulprint(&x);
@@ -411,7 +411,7 @@ void lutoa(unsigned long lu, char *ch)
         ++ch;
     }
     *ch = '\0';
-	return;
+    return;
 }
 
 void mul2(char *in, char *out)
@@ -513,16 +513,35 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
     return;
 }
 
-int isprime(long *n)
+
+int isprime(ullong *n)
 {
-    int c;
-    if (*n == 2 || *n == 3)
+    ullong c, dois, metade;
+    dois.l=2;
+    dois.h=0;
+    c.l=3;
+    c.h=0;
+
+    if((n->h == 0) && ((n->l == 0) || (n->l == 1)))
+        return 0;
+    if((n->h == 0) && ((n->l == 2) || (n->l == 3)))
         return 1;
-    for (c=2; c<=*n/2; c++)
+    if (~(n->l & 1))
+        return 0;
+
+    metade.l = n->l >> 1;
+    if(n->h && 1)
+        metade.l |= 1<<(BUFFER/2-1);
+    metade.h = n->h >> 1;
+
+    while(1)
     {
-        if (*n%c ==0)
+        if((c->h > metade.h)||((c->h==metade.h)&&(c->l>metade.l)))
+            break;
+        if(~(udiv(n,&c)))
             return 0;
     }
+
     if (c == *n)
         return 1;
     return 0;
