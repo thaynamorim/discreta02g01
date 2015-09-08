@@ -132,6 +132,23 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
+/**
+ * \ingroup GroupUnique
+ *    
+ * \brief transforma de string pra ullong.
+ * 
+ * \details esta função pega um valor grande de string grande e coloca em uma variavel tipo ullong. 
+ *
+ * \param[in] char numero escrito por extenso.
+ *             
+ * \param[out] ullong 
+ *                 
+ * \retval 0 problema resolvido.
+ *                     
+ * \retval 1 problema com overflow ou underflow.
+ *                                                      
+ */
+
 int ulet(char *in, ullong *out)
 {
     char ch[BUFFER];
@@ -183,6 +200,25 @@ int div2(char *in, char *out)
     *out = '\0';
     return (nval/5);
 }
+
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief Esta funcaoo soma duas variaveis ullong.
+ * 
+ * \details Soma duas variaveis ullong e da o resultado.
+ * 
+ * \param[in] a A variavel \a a  Primeiro numero da soma.
+ *  
+ * \param[in] b A variavel \a b Segundo numero da soma.
+ *
+ * \param[out] c A variavel \a c Resultado da soma de a e b.
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow.
+ *   
+ */
 
 int uadd(ullong *a, ullong *b, ullong *c)
 {
@@ -267,6 +303,27 @@ int udiv(ullong *n, ullong *d, ullong *r)
         return 1;
     return 0;
 }
+
+/**
+ *  \ingroup GroupUnique
+ *
+ *  \brief Multiplica 2 variaveis ullong.
+ *
+ *  \details  Multiplica a variavel a pela variavel b dando c como resultado.
+ *
+ *  \param[in] a A variavel \a a primeiro numero da multiplicacao.
+ *
+ *  \param[in] b A variavel \a b segundo numero da multiplicacao.
+ *
+ *  \param[out] c A variavel \a c resultado da multiplicacao entre a e b.
+ *
+ *  \retval 0 problema resolvido.
+ *
+ *  \retval 1 problema com overflow.
+ *
+ */
+
+>>>>>>> feature-lucas
 int umult(ullong *a, ullong *b, ullong *c)
 {
     unsigned long i=0;
@@ -320,6 +377,8 @@ int usub(ullong *x,ullong *y,ullong *z)
     return 0;
 }
 
+}
+
 void ulprint(ullong *n)
 {
     if(n->h == 0)
@@ -352,6 +411,21 @@ void ulprint(ullong *n)
     printf("%s",t);
     return;
 }
+
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief Converte unsigned long para string.
+ * 
+ * \details Esta funcao converte uma variavel unsigned long para uma string.
+ * 
+ * \param[in] lu A variavel \a lu vairavel unsigned long para ser convertida
+ * 
+ * \param[out] ch 
+ * 
+ * \retval void A funcao em si nao retorna nada.
+ *
+ */
 
 void lutoa(unsigned long lu, char *ch)
 {
@@ -408,6 +482,25 @@ void mul2(char *in, char *out)
     }
     return;
 }
+
+/**
+ * \ingroup GroupUnique
+ * 
+ * \brief soma 2 numeros em string.
+ *  
+ * \details Soma 2 numeros a e b em formato de string e da o resultado c.
+ * 
+ * \param[in] a A string \a a primeiro numero da soma. 
+ * 
+ * \param[in] b A string \a b segundo numero da soma.
+ *
+ * \param[out] c Resultado da soma.
+ * 
+ * \retval 0 problema resolvido.
+ * 
+ * \retval 1 problema com overflow.
+ * 
+ */ 
 
 void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
 {
