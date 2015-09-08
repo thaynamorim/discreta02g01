@@ -86,11 +86,11 @@ int div2(char *in, char *out);
 int uadd(ullong *a, ullong *b, ullong *c);
 int usub(ullong *x,ullong *y,ullong *z);
 int umult(ullong *a, ullong *b, ullong *c);
-int udiv(ullong *n, ullong *d,ullong *r);
+int udiv(ullong *n, ullong *d);
 void ulprint(ullong *n);
 void lutoa(unsigned long n, char *ch);
 void mul2(char *in, char *out);
-int isprime (long *n);
+int isprime (ullong *n);
 void sadd(char *a, char *b, char *c);
 
 
@@ -309,7 +309,7 @@ int uadd(ullong *a, ullong *b, ullong *c)
  *
  **/
 
-int udiv(ullong *n, ullong *d, ullong *r)
+int udiv(ullong *n, ullong *d)
 {
     return 0;
 }
@@ -623,7 +623,7 @@ void sadd(char *a, char *b, char *c) //assumindo n de digitos de a > b
  */
 int isprime(ullong *n)
 {
-    ullong c, dois, metade;
+    ullong c, dois, metade, j;
     dois.l=2;
     dois.h=0;
     c.l=3;
@@ -643,13 +643,16 @@ int isprime(ullong *n)
 
     while(1)
     {
-        if((c->h > metade.h)||((c->h==metade.h)&&(c->l>metade.l)))
+        if((c.h > metade.h)||((c.h==metade.h)&&(c.l>metade.l)))
             break;
         if(~(udiv(n,&c)))
             return 0;
+        uadd(&c,&dois,&j);
+        c.l = j.l;
+        c.h = j.h;
     }
 
-    if (c == *n)
+    if ((c.l == n->l) && (c.h == n->h))
         return 1;
     return 0;
 }
